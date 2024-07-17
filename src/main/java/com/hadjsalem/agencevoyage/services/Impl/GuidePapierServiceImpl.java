@@ -1,4 +1,5 @@
 package com.hadjsalem.agencevoyage.services.Impl;
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.GuidePapierDto;
 import com.hadjsalem.agencevoyage.entities.Facture;
 import com.hadjsalem.agencevoyage.entities.GuidePapier;
@@ -7,7 +8,12 @@ import com.hadjsalem.agencevoyage.repositories.GuidePapierRepository;
 import com.hadjsalem.agencevoyage.services.GuidePapierService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -58,5 +64,21 @@ public class GuidePapierServiceImpl implements GuidePapierService {
     @Override
     public void deleteGuidePapier(Long id) {
        guidePapierRepository.deleteById(id);
+    }
+
+    public PageResponse<GuidePapierDto> getGuidePapiers(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<GuidePapier> GuidePapiers = guidePapierRepository.findAll(pageRequest);
+        List<GuidePapierDto> GuidePapierList = GuidePapiers.map(mapper::fromGuidePapier).getContent();
+
+        return new PageResponse<>(
+                GuidePapierList,
+                GuidePapiers.getNumber(),
+                GuidePapiers.getSize(),
+                GuidePapiers.getTotalElements(),
+                GuidePapiers.getTotalPages(),
+                GuidePapiers.isFirst(),
+                GuidePapiers.isLast()
+        );
     }
 }

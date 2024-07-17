@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.services.Impl;
 
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.GuideDto;
 import com.hadjsalem.agencevoyage.entities.Guide;
 import com.hadjsalem.agencevoyage.entities.GuidePersonne;
@@ -8,8 +9,12 @@ import com.hadjsalem.agencevoyage.repositories.GuideRepository;
 import com.hadjsalem.agencevoyage.services.GuideService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -58,5 +63,21 @@ public class GuideServiceImpl implements GuideService {
     @Override
     public void deleteGuide(Long id) {
        guideRepository.deleteById(id);
+    }
+
+    public PageResponse<GuideDto> getGuides(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Guide> Guides = guideRepository.findAll(pageRequest);
+        List<GuideDto> GuideList = Guides.map(mapper::fromGuide).getContent();
+
+        return new PageResponse<>(
+                GuideList,
+                Guides.getNumber(),
+                Guides.getSize(),
+                Guides.getTotalElements(),
+                Guides.getTotalPages(),
+                Guides.isFirst(),
+                Guides.isLast()
+        );
     }
 }

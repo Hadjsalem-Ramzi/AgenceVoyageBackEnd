@@ -1,4 +1,5 @@
 package com.hadjsalem.agencevoyage.services.Impl;
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.HotelDto;
 import com.hadjsalem.agencevoyage.entities.Guide;
 import com.hadjsalem.agencevoyage.entities.Hotel;
@@ -7,7 +8,12 @@ import com.hadjsalem.agencevoyage.repositories.HotelRepository;
 import com.hadjsalem.agencevoyage.services.HotelService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -56,5 +62,21 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public void deleteHotel(Long id) {
       hotelRepository.deleteById(id);
+    }
+
+    public PageResponse<HotelDto> getHotels(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Hotel> Hotels = hotelRepository.findAll(pageRequest);
+        List<HotelDto> HotelList = Hotels.map(mapper::fromHotel).getContent();
+
+        return new PageResponse<>(
+                HotelList,
+                Hotels.getNumber(),
+                Hotels.getSize(),
+                Hotels.getTotalElements(),
+                Hotels.getTotalPages(),
+                Hotels.isFirst(),
+                Hotels.isLast()
+        );
     }
 }

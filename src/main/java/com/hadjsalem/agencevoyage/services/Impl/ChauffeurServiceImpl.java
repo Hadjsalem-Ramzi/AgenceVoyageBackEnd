@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.services.Impl;
 
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.ChauffeurDto;
 import com.hadjsalem.agencevoyage.entities.Chauffeur;
 import com.hadjsalem.agencevoyage.entities.Client;
@@ -8,8 +9,12 @@ import com.hadjsalem.agencevoyage.repositories.ChauffeurRepository;
 import com.hadjsalem.agencevoyage.services.ChauffeurService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -60,4 +65,29 @@ public class ChauffeurServiceImpl implements ChauffeurService {
     public void deleteChauffeur(Long id) {
        chauffeurRepository.deleteById(id);
     }
+
+
+
+    public PageResponse<ChauffeurDto> getChauffeurs(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Chauffeur> Chauffeurs = chauffeurRepository.findAll(pageRequest);
+        List<ChauffeurDto> ChauffeurList = Chauffeurs.map(mapper::fromChaufeur).getContent();
+
+        return new PageResponse<>(
+                ChauffeurList,
+                Chauffeurs.getNumber(),
+                Chauffeurs.getSize(),
+                Chauffeurs.getTotalElements(),
+                Chauffeurs.getTotalPages(),
+                Chauffeurs.isFirst(),
+                Chauffeurs.isLast()
+        );
+
+}
+    
+    
+    
+    
+    
+    
 }

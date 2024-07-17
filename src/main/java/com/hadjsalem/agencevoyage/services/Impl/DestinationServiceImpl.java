@@ -1,4 +1,5 @@
 package com.hadjsalem.agencevoyage.services.Impl;
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.DestinationDto;
 import com.hadjsalem.agencevoyage.entities.CompagnieTransport;
 import com.hadjsalem.agencevoyage.entities.Destination;
@@ -7,7 +8,12 @@ import com.hadjsalem.agencevoyage.repositories.DestinationRepository;
 import com.hadjsalem.agencevoyage.services.DestinationService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -57,5 +63,21 @@ public class DestinationServiceImpl implements DestinationService {
     @Override
     public void deleteDestination(Long id) {
        destinationRepository.deleteById(id);
+    }
+
+    public PageResponse<DestinationDto> getDestinations(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Destination> Destinations = destinationRepository.findAll(pageRequest);
+        List<DestinationDto> DestinationList = Destinations.map(mapper::fromdestination).getContent();
+
+        return new PageResponse<>(
+                DestinationList,
+                Destinations.getNumber(),
+                Destinations.getSize(),
+                Destinations.getTotalElements(),
+                Destinations.getTotalPages(),
+                Destinations.isFirst(),
+                Destinations.isLast()
+        );
     }
 }

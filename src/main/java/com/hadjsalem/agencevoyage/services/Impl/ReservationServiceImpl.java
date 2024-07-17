@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.services.Impl;
 
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.ReservationDto;
 import com.hadjsalem.agencevoyage.entities.MoyenTransport;
 import com.hadjsalem.agencevoyage.entities.Reservation;
@@ -8,8 +9,12 @@ import com.hadjsalem.agencevoyage.repositories.ReservationRepository;
 import com.hadjsalem.agencevoyage.services.ReservationService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -58,5 +63,21 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void deleteReservation(Long id) {
        reservationRepository.deleteById(id);
+    }
+
+    public PageResponse<ReservationDto> getReservations(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Reservation> Reservations = reservationRepository.findAll(pageRequest);
+        List<ReservationDto> ReservationList = Reservations.map(mapper::fromReservation).getContent();
+
+        return new PageResponse<>(
+                ReservationList,
+                Reservations.getNumber(),
+                Reservations.getSize(),
+                Reservations.getTotalElements(),
+                Reservations.getTotalPages(),
+                Reservations.isFirst(),
+                Reservations.isLast()
+        );
     }
 }

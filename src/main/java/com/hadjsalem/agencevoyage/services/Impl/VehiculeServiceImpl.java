@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.services.Impl;
 
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.VehiculeDto;
 import com.hadjsalem.agencevoyage.entities.Vehicule;
 import com.hadjsalem.agencevoyage.mapper.VehiculeMapper;
@@ -7,7 +8,12 @@ import com.hadjsalem.agencevoyage.repositories.VehiculeRepository;
 import com.hadjsalem.agencevoyage.services.VehiculeService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -56,5 +62,21 @@ public class VehiculeServiceImpl implements VehiculeService {
     @Override
     public void deleteVehicule(Long id) {
        vehiculeRepository.deleteById(id);
+    }
+
+    public PageResponse<VehiculeDto> getVehicules(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Vehicule> vehicules = vehiculeRepository.findAll(pageRequest);
+        List<VehiculeDto> VehiculeList = vehicules.map(mapper::fromVehicule).getContent();
+
+        return new PageResponse<>(
+                VehiculeList,
+                vehicules.getNumber(),
+                vehicules.getSize(),
+                vehicules.getTotalElements(),
+                vehicules.getTotalPages(),
+                vehicules.isFirst(),
+                vehicules.isLast()
+        );
     }
 }

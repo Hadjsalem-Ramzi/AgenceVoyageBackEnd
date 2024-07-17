@@ -1,5 +1,7 @@
 package com.hadjsalem.agencevoyage.services.Impl;
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.CompagnieTransportDto;
+import com.hadjsalem.agencevoyage.entities.CompagnieTransport;
 import com.hadjsalem.agencevoyage.entities.Client;
 import com.hadjsalem.agencevoyage.entities.CompagnieTransport;
 import com.hadjsalem.agencevoyage.mapper.CompagnieTransportMapper;
@@ -7,7 +9,12 @@ import com.hadjsalem.agencevoyage.repositories.CompagnieTransportRepository;
 import com.hadjsalem.agencevoyage.services.CompagnieTransportService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -58,4 +65,21 @@ public class CompagnieTransportServiceImpl implements CompagnieTransportService 
     public void deleteCompagnieTransport(Long id) {
        compagnieTransportRepository.deleteById(id);
     }
+
+    public PageResponse<CompagnieTransportDto> getCompagnieTransports(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<CompagnieTransport> CompagnieTransports = compagnieTransportRepository.findAll(pageRequest);
+        List<CompagnieTransportDto> CompagnieTransportList = CompagnieTransports.map(mapper::fromCompagnieTransport).getContent();
+
+        return new PageResponse<>(
+                CompagnieTransportList,
+                CompagnieTransports.getNumber(),
+                CompagnieTransports.getSize(),
+                CompagnieTransports.getTotalElements(),
+                CompagnieTransports.getTotalPages(),
+                CompagnieTransports.isFirst(),
+                CompagnieTransports.isLast()
+        );
+    }
+    
 }
