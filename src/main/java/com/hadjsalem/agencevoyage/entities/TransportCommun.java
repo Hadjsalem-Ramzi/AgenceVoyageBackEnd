@@ -1,20 +1,26 @@
 package com.hadjsalem.agencevoyage.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@DiscriminatorValue("TransportCommun")
 public class TransportCommun  extends CompagnieTransport{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String nom;
-    private  Long capacite;
+
+    private  Integer capacite;
+    public TransportCommun(Integer id, String nom, Integer numTel, Integer capacite) {
+        super();
+        this.setNom(nom);
+        this.setId(id);
+        this.setNumTel(numTel);
+        this.capacite = capacite;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.hadjsalem.agencevoyage.mapper;
 
 import com.hadjsalem.agencevoyage.dtos.GuidePapierDto;
+import com.hadjsalem.agencevoyage.dtos.GuidePersonneDto;
 import com.hadjsalem.agencevoyage.entities.GuidePersonne;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Service;
 public class GuidePersonneMapper {
     private ModelMapper mapper;
 
-    public GuidePapierDto fromGuidePersonne(GuidePersonne guidePersonne){
-        return  mapper.map(guidePersonne,GuidePapierDto.class);
+    public GuidePersonneDto fromGuidePersonne(GuidePersonne guidePersonne){
+        return  mapper.map(guidePersonne,GuidePersonneDto.class);
     }
 
-    public GuidePersonne fromGuidePersonneDto(GuidePapierDto guidePapierDto){
-        return  mapper.map(guidePapierDto,GuidePersonne.class);
+    public GuidePersonne fromGuidePersonneDto(GuidePersonneDto guidePersonneDto){
+        return  mapper.map(guidePersonneDto,GuidePersonne.class);
     }
 
 }

@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 
 @Entity
 @AllArgsConstructor
@@ -16,7 +17,7 @@ public class Reservation {
     private Long id ;
     private LocalDate dateReservation;
     private LocalTime HeureReservation;
-    private Long dureSejour;
+    private Period dureSejour;
 
     @ManyToOne
     private Client client;

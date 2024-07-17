@@ -17,7 +17,6 @@ public class Facture {
     private Long quantite;
     private Double prixUnitaire;
     private Double prixTotal;
-    private Double Total;
 
     @ManyToOne
     private Client client;

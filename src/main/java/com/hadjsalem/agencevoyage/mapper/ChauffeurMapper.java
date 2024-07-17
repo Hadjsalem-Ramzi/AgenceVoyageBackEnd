@@ -1,6 +1,6 @@
 package com.hadjsalem.agencevoyage.mapper;
 
-import com.hadjsalem.agencevoyage.dtos.ChaufeurDto;
+import com.hadjsalem.agencevoyage.dtos.ChauffeurDto;
 import com.hadjsalem.agencevoyage.entities.Chauffeur;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
-public class ChaufeurMapper {
+public class ChauffeurMapper {
 
     private ModelMapper mapper;
 
-    public ChaufeurDto fromChaufeur(Chauffeur chauffeur){
-        return mapper.map(chauffeur,ChaufeurDto.class);
+    public ChauffeurDto fromChaufeur(Chauffeur chauffeur){
+        return mapper.map(chauffeur, ChauffeurDto.class);
     }
 
-    public  Chauffeur fromChauffeurDto(ChaufeurDto chaufeurDto){
+    public  Chauffeur fromChauffeurDto(ChauffeurDto chaufeurDto){
         return mapper.map(chaufeurDto,Chauffeur.class);
     }
 

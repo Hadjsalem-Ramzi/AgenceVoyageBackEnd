@@ -15,8 +15,10 @@ public class Guide {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
-    private String nom;
-    private String Specialite;
+    private String firstName;
+    private String lastName;
+    private Integer numTel;
+    private String specialite;
 
     @OneToMany(mappedBy = "guide")
     private List<Client> clients;

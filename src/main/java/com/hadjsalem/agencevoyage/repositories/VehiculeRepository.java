@@ -3,6 +3,8 @@ package com.hadjsalem.agencevoyage.repositories;
 import com.hadjsalem.agencevoyage.entities.Vehicule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface VehiculeRepository extends JpaRepository<Vehicule,Long> {
-    Vehicule findVehiculeByImmatricule(String immatricule);
+    Optional<Vehicule> findVehiculeByImmatricule(String immatricule);
 }

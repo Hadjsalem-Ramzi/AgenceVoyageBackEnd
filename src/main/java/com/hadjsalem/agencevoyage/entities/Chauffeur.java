@@ -13,7 +13,9 @@ public class Chauffeur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
-    private String nom;
+    private String firstName;
+    private String lastName;
+    private Long numTelephone;
 
     @ManyToOne
     private Vehicule vehicule;

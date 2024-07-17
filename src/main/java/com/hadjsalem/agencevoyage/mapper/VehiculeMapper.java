@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class VehiculeMapper {
     private ModelMapper mapper;
 
-    public VehiculeDto fromVehiculeDto(Vehicule vehicule){
+    public VehiculeDto fromVehicule(Vehicule vehicule){
         return  mapper.map(vehicule,VehiculeDto.class);
     }
 

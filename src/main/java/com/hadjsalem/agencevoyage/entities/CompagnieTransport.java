@@ -11,11 +11,14 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
 public class CompagnieTransport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
+    private Integer id ;
     private String nom;
+    private Integer numTel;
 
 
     @OneToMany(mappedBy = "compagnieTransport")

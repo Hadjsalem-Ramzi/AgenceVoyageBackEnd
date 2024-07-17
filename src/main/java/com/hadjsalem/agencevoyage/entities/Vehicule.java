@@ -16,7 +16,7 @@ public class Vehicule  {
     private Long id ;
     private String immatricule;
     private String type;
-    private String capacite;
+    private Integer capacite;
 
     @ManyToOne
     private SocieteLocation societeLocation;

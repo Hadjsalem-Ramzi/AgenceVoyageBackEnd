@@ -3,6 +3,7 @@ package com.hadjsalem.agencevoyage.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.print.attribute.IntegerSyntax;
 import java.util.List;
 
 @Entity
@@ -17,6 +18,7 @@ public class Hotel {
     private Long id ;
     private  String libelle;
     private String caracteristique;
+    private Integer numberBed;
 
     @ManyToMany(mappedBy = "hotels")
     private List<Client> clients;

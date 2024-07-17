@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class MoyenTransportMapper {
     private ModelMapper mapper;
 
-    public MoyenTransportDto frommoyenTransport(MoyenTransport moyenTransport){
+    public MoyenTransportDto fromMoyenTransport(MoyenTransport moyenTransport){
         return mapper.map(moyenTransport,MoyenTransportDto.class);
     }
 

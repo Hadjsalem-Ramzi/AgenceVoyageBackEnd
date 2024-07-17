@@ -6,17 +6,19 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@DiscriminatorValue("SocieteLocation")
 public class SocieteLocation extends CompagnieTransport {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String nom;
 
     @OneToMany(mappedBy = "societeLocation")
     List<Vehicule> vehicules;
 
+    public SocieteLocation(Integer id1, String nom1, Integer numTel1) {
+        super();
+        this.setId(id1);
+        this.setNom(nom1);
+        this.setNumTel(numTel1);
+    }
 }

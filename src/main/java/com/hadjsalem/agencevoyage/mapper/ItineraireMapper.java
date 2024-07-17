@@ -1,6 +1,6 @@
 package com.hadjsalem.agencevoyage.mapper;
 
-import com.hadjsalem.agencevoyage.dtos.IteneraireDto;
+import com.hadjsalem.agencevoyage.dtos.ItineraireDto;
 import com.hadjsalem.agencevoyage.entities.Itineraire;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
-public class IteneraireMapper {
+public class ItineraireMapper {
     private ModelMapper mapper;
 
-    public IteneraireDto fromIteneraire(Itineraire itineraire){
-        return  mapper.map(itineraire,IteneraireDto.class);
+    public ItineraireDto fromItineraire(Itineraire itineraire){
+        return  mapper.map(itineraire, ItineraireDto.class);
     }
 
-    public Itineraire fromIteneraireDto(IteneraireDto iteneraireDto){
+    public Itineraire fromItineraireDto(ItineraireDto iteneraireDto){
         return  mapper.map(iteneraireDto ,Itineraire.class);
     }
 
