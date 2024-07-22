@@ -5,13 +5,18 @@ import com.hadjsalem.agencevoyage.entities.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
 public class ReservationMapper {
     private ModelMapper mapper;
+
+    @Autowired
+    public ReservationMapper(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public ReservationDto fromReservation(Reservation reservation){
         return  mapper.map(reservation,ReservationDto.class);

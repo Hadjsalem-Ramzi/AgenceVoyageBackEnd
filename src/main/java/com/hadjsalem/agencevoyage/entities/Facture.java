@@ -33,6 +33,10 @@ public class Facture {
     @Positive(message = "Ce Champ doit être positif.")
     private Double prixTotal;
 
+    @NotNull(message = "Ce champ ne peut pas être null.")
+    @Positive(message = "Ce Champ doit être positif.")
+    private Double Total;
+
     @ManyToOne
     private Client client;
 

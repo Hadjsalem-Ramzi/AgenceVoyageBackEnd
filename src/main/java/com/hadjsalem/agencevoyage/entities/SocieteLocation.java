@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+
 @NoArgsConstructor
 @DiscriminatorValue("SL")
 public class SocieteLocation extends CompagnieTransport {

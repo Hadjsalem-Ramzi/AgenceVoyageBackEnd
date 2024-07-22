@@ -5,13 +5,18 @@ import com.hadjsalem.agencevoyage.entities.TransportCommun;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
 public class TransportCommunMapper {
     private ModelMapper mapper;
+
+    @Autowired
+    public TransportCommunMapper(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public TransportCommunDto fromTransportCommun(TransportCommun transportCommun){
         return  mapper.map(transportCommun,TransportCommunDto.class);
