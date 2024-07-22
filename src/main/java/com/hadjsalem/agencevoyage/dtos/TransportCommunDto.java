@@ -2,5 +2,8 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 
-public record TransportCommunDto(Long id,String nom,Long capacite) {
+public class TransportCommunDto {
+  private   Long id;
+  private   String nom;
+  private   Long capacite;
 }

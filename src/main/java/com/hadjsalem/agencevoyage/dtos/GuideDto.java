@@ -2,5 +2,11 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 
-public record GuideDto(Long id,String firstName,String lastName,Integer numTel,String Specialite) {
+public class GuideDto {
+
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private Integer numTel;
+    private String Specialite;
 }

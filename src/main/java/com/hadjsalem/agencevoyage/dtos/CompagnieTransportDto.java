@@ -2,5 +2,9 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 
-public record CompagnieTransportDto(Long id,String nom, Integer numTel) {
+public class CompagnieTransportDto {
+
+   private Long id;
+    private  String nom;
+    private  Integer numTel;
 }

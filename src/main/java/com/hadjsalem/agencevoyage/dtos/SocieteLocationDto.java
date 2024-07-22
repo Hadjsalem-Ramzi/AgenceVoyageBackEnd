@@ -3,5 +3,8 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 
-public record SocieteLocationDto(Long id,String nom) {
+public class SocieteLocationDto {
+  private   Long id;
+   private String nom;
+
 }

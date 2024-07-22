@@ -1,5 +1,8 @@
 package com.hadjsalem.agencevoyage.dtos;
 
 
-public record HotelDto(Long id,String libelle,String caracteristique) {
+public class HotelDto {
+    private Long id;
+    private String libelle;
+    private String caracteristique;
 }

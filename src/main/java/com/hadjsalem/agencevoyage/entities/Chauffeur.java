@@ -29,6 +29,13 @@ public class Chauffeur {
     @Digits(integer = 10, fraction = 0, message = "Le numéro de téléphone doit contenir exactement 10 chiffres.")
     private Long numTelephone;
 
+    public Chauffeur(Long id, String firstName, String lastName, Long numTelephone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.numTelephone = numTelephone;
+    }
+
     @ManyToOne
     private Vehicule vehicule;
 }

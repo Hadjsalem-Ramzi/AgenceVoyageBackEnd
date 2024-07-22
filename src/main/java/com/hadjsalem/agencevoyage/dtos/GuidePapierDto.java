@@ -3,5 +3,7 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 
-public record GuidePapierDto(Long id, String libelle) {
+public class GuidePapierDto {
+ private    Long id;
+ private    String libelle;
 }

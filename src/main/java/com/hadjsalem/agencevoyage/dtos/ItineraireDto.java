@@ -1,5 +1,8 @@
 package com.hadjsalem.agencevoyage.dtos;
 
 
-public record ItineraireDto(Long id, String libelle, String caracteristique) {
+public class ItineraireDto {
+    private Long id;
+    private    String libelle;
+    private String caracteristique;
 }

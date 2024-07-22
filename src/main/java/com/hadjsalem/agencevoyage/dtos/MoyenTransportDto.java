@@ -1,5 +1,10 @@
 package com.hadjsalem.agencevoyage.dtos;
 
 
-public record MoyenTransportDto(Long id,String nom,String Type,Long capacite) {
+public class MoyenTransportDto {
+
+private Long id;
+private   String nom;
+private   String Type;
+private Long capacite;
 }

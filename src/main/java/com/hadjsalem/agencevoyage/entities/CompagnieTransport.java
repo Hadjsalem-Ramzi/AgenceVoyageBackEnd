@@ -12,8 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "dtype")
+@Inheritance(strategy =InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="Type_Transport")
 public class CompagnieTransport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue("SocieteLocation")
+@DiscriminatorValue("SL")
 public class SocieteLocation extends CompagnieTransport {
 
     @OneToMany(mappedBy = "societeLocation")

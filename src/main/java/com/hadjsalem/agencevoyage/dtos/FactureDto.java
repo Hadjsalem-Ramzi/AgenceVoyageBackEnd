@@ -2,5 +2,11 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 
-public record FactureDto(Long id,String designation,Long quantite,Double prixUnitaire,Double prixTotal,Double Total) {
+public class FactureDto {
+    private  Long id;
+    private   String designation;
+    private Long quantite;
+    private Double prixUnitaire;
+    private   Double prixTotal;
+    private Double Total;
 }

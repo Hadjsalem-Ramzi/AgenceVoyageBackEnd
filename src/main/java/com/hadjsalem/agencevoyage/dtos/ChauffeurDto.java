@@ -1,5 +1,17 @@
 package com.hadjsalem.agencevoyage.dtos;
 
-public record ChauffeurDto(Long id , String nom, String lastName,Long NumTelephone) {
+
+
+public class ChauffeurDto {
+
+    private Long id ;
+
+    private String firstName;
+
+
+    private String lastName;
+
+
+    private Long numTelephone;
 
 }
