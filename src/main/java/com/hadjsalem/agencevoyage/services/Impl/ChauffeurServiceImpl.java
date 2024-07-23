@@ -46,10 +46,7 @@ public class ChauffeurServiceImpl implements ChauffeurService {
     @Override
     public ChauffeurDto saveChauffeur(ChauffeurDto ChauffeurDto) {
       Chauffeur Chauffeur1 = mapper.fromChauffeurDto(ChauffeurDto);
-      var violations = chauffeurValidators.validate(Chauffeur1);
-      /*if(!violations.isEmpty()){
-          return String.join("/n",violations);
-      }*/
+       chauffeurValidators.validate(Chauffeur1);
       Chauffeur Chauffeur2= chauffeurRepository.save(Chauffeur1);
       return mapper.fromChaufeur(Chauffeur2);
     }
@@ -89,10 +86,9 @@ public class ChauffeurServiceImpl implements ChauffeurService {
         );
 
 }
-    
-    
-    
-    
-    
-    
+
+
+    public String throwException() {
+        throw  new IllegalArgumentException("Some Exception happened");
+    }
 }

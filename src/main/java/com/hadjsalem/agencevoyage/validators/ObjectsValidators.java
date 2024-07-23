@@ -1,6 +1,7 @@
 package com.hadjsalem.agencevoyage.validators;
 
 import com.hadjsalem.agencevoyage.entities.Chauffeur;
+import com.hadjsalem.agencevoyage.exceptions.ObjectNotValidException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -17,14 +18,15 @@ public class ObjectsValidators<T> {
     private  final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private  final Validator validator = factory.getValidator();
 
-    public Set<String> validate (T objectToValidate){
+    public void validate (T objectToValidate){
         Set<ConstraintViolation<T>> violations = validator.validate(objectToValidate);
         if (!violations.isEmpty()){
-        return  violations.stream()
+        var errorMessages = violations.stream()
                     .map(ConstraintViolation::getMessage)
-                    .collect(Collectors.toSet());
+                     .collect(Collectors.toSet());
+
+        throw  new ObjectNotValidException(errorMessages);
         }
-        return Collections.emptySet();
     }
 
 }
