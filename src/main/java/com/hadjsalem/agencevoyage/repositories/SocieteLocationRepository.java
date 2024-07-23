@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface SocieteLocationRepository extends JpaRepository<SocieteLocation,Long> {
 Optional<SocieteLocation> findSocieteLocationByNom(String Nom);
+    boolean existsByNumTel(Integer numTel);
 }

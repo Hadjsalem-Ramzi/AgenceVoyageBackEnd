@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface ChauffeurRepository extends JpaRepository<Chauffeur,Long> {
     Optional<Chauffeur> findChauffeurByNumTelephone(Long NumTel);
+     boolean existsByNumTelephone(Integer numTel);
 }

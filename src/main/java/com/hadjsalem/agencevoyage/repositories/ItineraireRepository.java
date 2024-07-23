@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ItineraireRepository extends JpaRepository<Itineraire,Long> {
     Optional<Itineraire> findItineraireByLibelle (String Libelle);
+
+    boolean existsByLibelle(String libelle);
 }

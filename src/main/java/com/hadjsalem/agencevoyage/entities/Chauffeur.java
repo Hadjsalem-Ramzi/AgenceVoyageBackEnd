@@ -13,6 +13,9 @@ import lombok.*;
 public class Chauffeur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
+
     private Long id ;
     @NotNull( message= "Cette Champ ne peut pas être null.")
     @NotEmpty(message = "Cette Champ ne peut pas être vide.")
@@ -20,7 +23,7 @@ public class Chauffeur {
     private String firstName;
 
     @NotNull( message= "Cette Champ ne peut pas être null.")
-    @NotEmpty(message = "Cette Champ ne peut pas être vide.")
+   @NotEmpty(message = "Cette Champ ne peut pas être vide.")
     @NotBlank(message = "Cette Champ ne peut pas être composé uniquement d'espaces blancs.")
     private String lastName;
 

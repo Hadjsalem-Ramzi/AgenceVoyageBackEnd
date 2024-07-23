@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface TransportCommunRepository extends JpaRepository<TransportCommun,Long> {
     Optional<TransportCommun> findTransportCommunByNom(String Nom);
+    boolean existsByNumTel(Integer numTel);
 }

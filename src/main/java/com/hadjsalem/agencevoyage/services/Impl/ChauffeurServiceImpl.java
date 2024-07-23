@@ -3,12 +3,11 @@ package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.ChauffeurDto;
 import com.hadjsalem.agencevoyage.entities.Chauffeur;
-import com.hadjsalem.agencevoyage.entities.Client;
 import com.hadjsalem.agencevoyage.mapper.ChauffeurMapper;
 import com.hadjsalem.agencevoyage.repositories.ChauffeurRepository;
 import com.hadjsalem.agencevoyage.services.ChauffeurService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +19,12 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ChauffeurServiceImpl implements ChauffeurService {
-    private ChauffeurRepository chauffeurRepository;
-    private ChauffeurMapper mapper;
+    private final ChauffeurRepository chauffeurRepository;
+    private final ChauffeurMapper mapper;
+    private final ObjectsValidators<Chauffeur> chauffeurValidators;
+
+
 
 
     @Override
@@ -45,6 +46,10 @@ public class ChauffeurServiceImpl implements ChauffeurService {
     @Override
     public ChauffeurDto saveChauffeur(ChauffeurDto ChauffeurDto) {
       Chauffeur Chauffeur1 = mapper.fromChauffeurDto(ChauffeurDto);
+      var violations = chauffeurValidators.validate(Chauffeur1);
+      /*if(!violations.isEmpty()){
+          return String.join("/n",violations);
+      }*/
       Chauffeur Chauffeur2= chauffeurRepository.save(Chauffeur1);
       return mapper.fromChaufeur(Chauffeur2);
     }

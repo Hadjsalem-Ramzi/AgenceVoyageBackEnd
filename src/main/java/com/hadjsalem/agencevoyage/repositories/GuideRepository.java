@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface GuideRepository extends JpaRepository<Guide,Long> {
     Optional<Guide> findGuideByNumTel(Integer numTel);
+
+    boolean existsByNumTel(Integer numTel);
 }

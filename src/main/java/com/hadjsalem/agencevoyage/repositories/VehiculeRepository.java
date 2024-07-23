@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface VehiculeRepository extends JpaRepository<Vehicule,Long> {
     Optional<Vehicule> findVehiculeByImmatricule(String immatricule);
+    boolean existsByImmatricule(String immat );
 }

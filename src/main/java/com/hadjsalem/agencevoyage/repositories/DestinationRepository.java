@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface DestinationRepository extends JpaRepository<Destination,Long> {
     Optional<Destination> findDestinationByVille(String Pays);
+    boolean existsByVille(String ville);
+    boolean existsByPays(String pays);
 }

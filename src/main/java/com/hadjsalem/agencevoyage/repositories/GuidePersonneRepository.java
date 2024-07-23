@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface GuidePersonneRepository extends JpaRepository<GuidePersonne,Long> {
     Optional<GuidePersonne> findGuidePersonneByNumTel(Integer Numtel);
+    boolean existsByNumTel(Integer numTel);
 }

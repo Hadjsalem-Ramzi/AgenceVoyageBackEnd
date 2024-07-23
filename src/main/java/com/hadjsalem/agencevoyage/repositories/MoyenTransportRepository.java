@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface MoyenTransportRepository extends JpaRepository<MoyenTransport,Long> {
     Optional<MoyenTransport> findMoyenTransportByNom(String Nom);
+    boolean existsByNom(String nom);
 }

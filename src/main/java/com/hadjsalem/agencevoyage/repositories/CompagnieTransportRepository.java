@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CompagnieTransportRepository extends JpaRepository<CompagnieTransport,Long> {
     Optional<CompagnieTransport> findCompagnieTransportByNom(String Nom);
+    boolean existsByNumTel(Integer numTel);
+
 }
