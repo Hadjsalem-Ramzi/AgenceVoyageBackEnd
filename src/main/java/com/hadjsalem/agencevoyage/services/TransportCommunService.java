@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.services;
 
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.TransportCommunDto;
 
 public interface TransportCommunService {
@@ -9,7 +10,7 @@ public interface TransportCommunService {
     TransportCommunDto updateTransportCommun(TransportCommunDto transportCommun,Long id);
     void deleteTransportCommun(Long id);
 
-
+   PageResponse<TransportCommunDto> getTransportCommuns(int page, int size);
 
 
 }

@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.services;
 
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.SocieteLocationDto;
 
 public interface SocieteLocationService {
@@ -9,7 +10,7 @@ public interface SocieteLocationService {
     SocieteLocationDto updateSocieteLocation( SocieteLocationDto societeLocation,Long id);
     void deleteSocieteLocation(Long id);
 
-
+   PageResponse<SocieteLocationDto> getSocieteLocations(int page,int size);
 
 
 }

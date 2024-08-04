@@ -1,4 +1,5 @@
 package com.hadjsalem.agencevoyage.services;
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.FactureDto;
 
 public interface FactureService {
@@ -7,8 +8,7 @@ public interface FactureService {
     FactureDto saveFacture(FactureDto facture);
     FactureDto updateFacture(FactureDto facture,Long id);
     void deleteFacture(Long id);
-
-
+    PageResponse<FactureDto> getFactures(int page,int size);
 
 
 }

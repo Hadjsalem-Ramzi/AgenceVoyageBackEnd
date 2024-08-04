@@ -1,4 +1,5 @@
 package com.hadjsalem.agencevoyage.services;
+import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.ReservationDto;
 
 import java.time.LocalDate;
@@ -9,5 +10,7 @@ public interface ReservationService {
     ReservationDto saveReservation(ReservationDto reservation);
     ReservationDto updateReservation(ReservationDto reservation,Long id);
     void deleteReservation(Long id);
+
+    PageResponse<ReservationDto>getReservations(int page,int size);
 
 }
