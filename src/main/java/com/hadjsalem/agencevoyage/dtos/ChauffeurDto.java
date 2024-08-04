@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 @Builder
 public class ChauffeurDto {
 
@@ -18,6 +19,6 @@ public class ChauffeurDto {
     private String lastName;
 
 
-    private Long numTelephone;
+    private Integer numTelephone;
 
 }

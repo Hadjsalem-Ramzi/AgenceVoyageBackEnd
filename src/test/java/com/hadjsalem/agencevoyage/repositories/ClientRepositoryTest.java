@@ -29,15 +29,15 @@ class ClientRepositoryTest {
 
     @Test
     public void SouldFindClientByFirstName(){
-        String firstName="Houssem";
-        Optional<Client> result=clientRepository.findClientByFirstName(firstName);
+        String email="Houssem@gmail.com";
+        Optional<Client> result=clientRepository.findClientByEmail(email);
         AssertionsForClassTypes.assertThat(result).isPresent();
     }
     @Test
     public void SouldNotFindClientByFirstName(){
-        String firstName="ccccccccc";
+        String email="Houssem@gmail.com";
 
-        Optional<Client> result=clientRepository.findClientByFirstName(firstName);
+        Optional<Client> result=clientRepository.findClientByEmail(email);
 
         AssertionsForClassTypes.assertThat(result).isEmpty();
     }

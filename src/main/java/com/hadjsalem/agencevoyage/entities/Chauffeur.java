@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 @Builder
 public class Chauffeur {
     @Id
@@ -30,9 +31,9 @@ public class Chauffeur {
     @NotNull(message = "Le numéro de téléphone ne peut pas être null.")
     @Positive(message = "Le numéro de téléphone doit être positif.")
     @Digits(integer = 10, fraction = 0, message = "Le numéro de téléphone doit contenir exactement 10 chiffres.")
-    private Long numTelephone;
+    private Integer numTelephone;
 
-    public Chauffeur(Long id, String firstName, String lastName, Long numTelephone) {
+    public Chauffeur(Long id, String firstName, String lastName, Integer numTelephone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

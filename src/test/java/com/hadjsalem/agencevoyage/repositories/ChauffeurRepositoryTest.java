@@ -19,14 +19,14 @@ class ChauffeurRepositoryTest {
 
     @BeforeEach
     public void setUp(){
-        chauffeurRepository.save(Chauffeur.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022L).build());
-        chauffeurRepository.save(Chauffeur.builder().firstName("Mohsen").lastName("Dabdaba").numTelephone(54658022L).build());
-        chauffeurRepository.save(Chauffeur.builder().firstName("Aymen").lastName("HadjAli").numTelephone(54656222L).build());
+        chauffeurRepository.save(Chauffeur.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022).build());
+        chauffeurRepository.save(Chauffeur.builder().firstName("Mohsen").lastName("Dabdaba").numTelephone(54658022).build());
+        chauffeurRepository.save(Chauffeur.builder().firstName("Aymen").lastName("HadjAli").numTelephone(54656222).build());
     }
 
     @Test
     public void ShouldFindChauffeurByNumTelephone(){
-            Long numTel= 54604022L;
+            Integer numTel= 54604022;
             Optional<Chauffeur> result = chauffeurRepository.findChauffeurByNumTelephone(numTel);
 
         AssertionsForClassTypes.assertThat(result).isPresent();
@@ -35,7 +35,7 @@ class ChauffeurRepositoryTest {
 
     @Test
     public void ShouldNotFindChauffeurByNumTelephone(){
-        Long numTel= 54621111L;
+        Integer numTel= 54621111;
         Optional<Chauffeur> result = chauffeurRepository.findChauffeurByNumTelephone(numTel);
        AssertionsForClassTypes.assertThat(result).isEmpty();
 

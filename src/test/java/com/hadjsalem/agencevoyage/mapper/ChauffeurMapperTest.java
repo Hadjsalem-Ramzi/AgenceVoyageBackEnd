@@ -21,8 +21,8 @@ class ChauffeurMapperTest {
    @Test
     public void ShouldMapChauffeurToChauffeurDto(){
 
-        Chauffeur givenChauffeur= Chauffeur.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022L).build();
-        ChauffeurDto expected = ChauffeurDto.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022L).build();
+        Chauffeur givenChauffeur= Chauffeur.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022).build();
+        ChauffeurDto expected = ChauffeurDto.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022).build();
 
         ChauffeurDto result= underTest.fromChaufeur(givenChauffeur);
 
@@ -34,8 +34,8 @@ class ChauffeurMapperTest {
     @Test
     public void ShouldMapChauffeurDtoToChauffeur(){
 
-        ChauffeurDto givenChauffeur= ChauffeurDto.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022L).build();
-        Chauffeur expected = Chauffeur.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022L).build();
+        ChauffeurDto givenChauffeur= ChauffeurDto.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022).build();
+        Chauffeur expected = Chauffeur.builder().firstName("Ramzi").lastName("Hadjsalem").numTelephone(54604022).build();
 
         Chauffeur result= underTest.fromChauffeurDto(givenChauffeur);
 

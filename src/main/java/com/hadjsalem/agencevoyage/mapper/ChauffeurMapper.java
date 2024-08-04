@@ -2,31 +2,31 @@ package com.hadjsalem.agencevoyage.mapper;
 
 import com.hadjsalem.agencevoyage.dtos.ChauffeurDto;
 import com.hadjsalem.agencevoyage.entities.Chauffeur;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-
-
-@Service
+@Component
 public class ChauffeurMapper {
 
-    public ModelMapper mapper;
     @Autowired
-    public ChauffeurMapper(ModelMapper mapper) {
-        this.mapper = mapper;
+    private ModelMapper modelMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(ChauffeurMapper.class);
+
+    public Chauffeur fromChauffeurDto(ChauffeurDto chauffeurDto) {
+        logger.info("Mapping ChauffeurDto to Chauffeur: {}", chauffeurDto);
+        Chauffeur chauffeur = modelMapper.map(chauffeurDto, Chauffeur.class);
+        logger.info("Mapped Chauffeur: {}", chauffeur);
+        return chauffeur;
     }
 
-
-
-    public ChauffeurDto fromChaufeur(Chauffeur chauffeur){
-        return mapper.map(chauffeur, ChauffeurDto.class);
+    public ChauffeurDto fromChaufeur(Chauffeur chauffeur) {
+        logger.info("Mapping Chauffeur to ChauffeurDto: {}", chauffeur);
+        ChauffeurDto chauffeurDto = modelMapper.map(chauffeur, ChauffeurDto.class);
+        logger.info("Mapped ChauffeurDto: {}", chauffeurDto);
+        return chauffeurDto;
     }
-
-    public  Chauffeur fromChauffeurDto(ChauffeurDto chaufeurDto){
-        return mapper.map(chaufeurDto,Chauffeur.class);
-    }
-
 }

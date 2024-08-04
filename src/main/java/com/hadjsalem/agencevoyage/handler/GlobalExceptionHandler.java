@@ -1,5 +1,6 @@
 package com.hadjsalem.agencevoyage.handler;
 
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.exceptions.ObjectNotValidException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(IllegalStateException  exception){
         return   ResponseEntity
                 .badRequest()
-                .body(exception.getMessage());
+                .body("Illegal State" + exception.getMessage());
     }
 
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleException(){
+    public ResponseEntity<?> handleException(EntityNotFoundException exception){
         return   ResponseEntity
-                .notFound()
-                .build();
+                .badRequest()
+                .body("Entity Not Found: " + exception.getMessage());
     }
 
 
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler(DuplicateEntryException.class)
+    public ResponseEntity<?> handleException(DuplicateEntryException exception){
+        return   ResponseEntity
+                .badRequest()
+                .body(exception.getMessage());
+    }
 
 
 }
