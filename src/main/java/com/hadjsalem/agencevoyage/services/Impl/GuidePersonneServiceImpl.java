@@ -35,7 +35,7 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
 
     @Override
     public GuidePersonneDto findGuidePersonneByNumTel(Integer NumTel) {
-        Optional<GuidePersonne> guidePersonne = guidePersonneRepository.findGuidePersonneByNumTel(NumTel);
+        Optional<GuidePersonne> guidePersonne = guidePersonneRepository.findPersonneByNumTelephone(NumTel);
         if (!guidePersonne.isPresent()) {
             throw new RuntimeException("Client Not Found");
         }

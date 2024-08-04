@@ -11,7 +11,7 @@ public interface GuidePersonneService {
     GuidePersonneDto  updateGuidePersonne(GuidePersonneDto  guidePersonne,Long id);
     void deleteGuidePersonne(Long id);
 
-    PageResponse<GuidePersonneDto>getPersonnes(int page, int size);
+    PageResponse<GuidePersonneDto>getGuidePersonnes(int page, int size);
 
 
 

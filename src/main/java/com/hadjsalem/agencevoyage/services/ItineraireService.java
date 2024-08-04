@@ -9,7 +9,7 @@ public interface ItineraireService {
     ItineraireDto saveItineraire(ItineraireDto itineraire);
     ItineraireDto updateItineraire(ItineraireDto itineraire, Long id);
     void deleteItineraire(Long id);
-   PageResponse<ItineraireDto>findItineraires(int page,int size);
+   PageResponse<ItineraireDto>getItineraires(int page,int size);
 
 
 }

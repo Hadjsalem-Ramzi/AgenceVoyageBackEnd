@@ -1,7 +1,6 @@
 package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.DestinationDto;
-import com.hadjsalem.agencevoyage.entities.CompagnieTransport;
 import com.hadjsalem.agencevoyage.entities.Destination;
 import com.hadjsalem.agencevoyage.mapper.DestinationMapper;
 import com.hadjsalem.agencevoyage.repositories.DestinationRepository;
@@ -65,8 +64,9 @@ public class DestinationServiceImpl implements DestinationService {
        destinationRepository.deleteById(id);
     }
 
-    public PageResponse<DestinationDto> getDestinations(int page, int size) {
-        Pageable pageRequest = PageRequest.of(page, size);
+    @Override
+    public PageResponse<DestinationDto> getDestination(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page,size);
         Page<Destination> Destinations = destinationRepository.findAll(pageRequest);
         List<DestinationDto> DestinationList = Destinations.map(mapper::fromdestination).getContent();
 
@@ -80,4 +80,6 @@ public class DestinationServiceImpl implements DestinationService {
                 Destinations.isLast()
         );
     }
+
+
 }

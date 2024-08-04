@@ -37,6 +37,15 @@ public class ClientServiceImpl implements ClientService {
 
     }
 
+    @Override
+    public ClientDto findClientByEmail(String email) {
+        Optional<Client> client = clientRepository.findClientByEmail(email);
+        if(client.isEmpty()){
+            throw  new EntityNotFoundException("client not Found");
+        }
+        return mapper.fromClient(client.get());
+    }
+
     public ClientDto findClientByFirstName(String email) {
         Optional<Client> client = clientRepository.findClientByEmail(email);
         if (!client.isPresent()) {
