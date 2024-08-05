@@ -93,7 +93,7 @@ public class ClientServiceImpl implements ClientService {
         if(clientRepository.findById(id).isPresent()){
             clientRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("client with this is Not Found");
+            throw new EntityNotFoundException("client with this id Not Found");
         }
        
     }

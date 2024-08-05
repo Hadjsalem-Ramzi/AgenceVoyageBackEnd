@@ -27,7 +27,7 @@ class GuidePersonneRepositoryTest {
     public void ShouldFindPersonneByNumTel(){
         Integer NumTel=65213489;
 
-        Optional<GuidePersonne> result=guidePersonneRepository.findGuidePersonneByNumTel(NumTel);
+        Optional<GuidePersonne> result=guidePersonneRepository.findPersonneByNumTelephone(NumTel);
 
         AssertionsForClassTypes.assertThat(result).isPresent();
 
@@ -37,7 +37,7 @@ class GuidePersonneRepositoryTest {
     public void ShouldNotFindPersonneByNumTel(){
         Integer NumTel=65454444;
 
-        Optional<GuidePersonne> result=guidePersonneRepository.findGuidePersonneByNumTel(NumTel);
+        Optional<GuidePersonne> result=guidePersonneRepository.findPersonneByNumTelephone(NumTel);
 
         AssertionsForClassTypes.assertThat(result).isEmpty();
 
