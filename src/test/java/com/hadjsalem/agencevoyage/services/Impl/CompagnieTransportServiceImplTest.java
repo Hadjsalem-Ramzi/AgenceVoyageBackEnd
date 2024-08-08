@@ -113,8 +113,9 @@ class CompagnieTransportServiceImplTest {
         assertEquals(true, result.isFirst());
         assertEquals(true, result.isLast());
     }
-    */
-/******         Test GetById Method                ***//*
+*/
+/*****         Test GetById Method                **//*
+
 
     @Test
     void ShouldFindCompagnieTransportById() {
@@ -137,8 +138,9 @@ class CompagnieTransportServiceImplTest {
 
     }
 
-    */
-/***                Test Method FindCompagnieTransportByNumTel                    ************//*
+*/
+/**                Test Method FindCompagnieTransportByNumTel                    ***********//*
+
 
     @Test
     void ShouldfindCompagnieTransportByNom() {
@@ -164,11 +166,10 @@ class CompagnieTransportServiceImplTest {
         assertThatThrownBy(() -> underTest.findCompagnieTransportByNom(givenNom)).isInstanceOf(EntityNotFoundException.class);
     }
 
-*/
-/**********************************************************************************************//*
 
-    */
-/***    Test  Method updateCompagnieTransport ******//*
+*/
+/**    Test  Method updateCompagnieTransport *****//*
+
 
 
     @Test
@@ -264,8 +265,9 @@ class CompagnieTransportServiceImplTest {
 
 
 
-    */
-/****             Test Méthod Delete       **********//*
+*/
+/***             Test Méthod Delete       *********//*
+
 
 
     @Test

@@ -1,6 +1,4 @@
 package com.hadjsalem.agencevoyage.validators;
-
-import com.hadjsalem.agencevoyage.entities.Chauffeur;
 import com.hadjsalem.agencevoyage.exceptions.ObjectNotValidException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

@@ -16,7 +16,7 @@ public class SocieteLocation extends CompagnieTransport {
     @OneToMany(mappedBy = "societeLocation")
     List<Vehicule> vehicules;
 
-    public SocieteLocation(Integer id1, String nom1, Integer numTel1) {
+    public SocieteLocation(Long id1, String nom1, Integer numTel1) {
         super();
         this.setId(id1);
         this.setNom(nom1);

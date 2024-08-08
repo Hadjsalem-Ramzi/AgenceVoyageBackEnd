@@ -3,9 +3,12 @@ import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.HotelDto;
 import com.hadjsalem.agencevoyage.entities.Guide;
 import com.hadjsalem.agencevoyage.entities.Hotel;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.HotelMapper;
 import com.hadjsalem.agencevoyage.repositories.HotelRepository;
 import com.hadjsalem.agencevoyage.services.HotelService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class HotelServiceImpl implements HotelService {
     private HotelRepository hotelRepository;
     private HotelMapper mapper;
+    private ObjectsValidators<Hotel> hotelValidators;
 
 
     @Override
@@ -41,27 +45,45 @@ public class HotelServiceImpl implements HotelService {
         return mapper.fromHotel(hotel.get());
     }
     @Override
-    public HotelDto saveHotel(HotelDto HotelDto) {
-     Hotel Hotel1 = mapper.fromHotelDto(HotelDto);
-     Hotel Hotel2=hotelRepository.save(Hotel1);
-      return mapper.fromHotel(Hotel2);
+    public HotelDto saveHotel(HotelDto hotelDto) {
+     Hotel hotel = mapper.fromHotelDto(hotelDto);
+     if( hotel == null){
+         throw new IllegalArgumentException("Hotel est null");
+     }
+     hotelValidators.validate(hotel);
+     boolean exists = hotelRepository.existsByLibelle(hotelDto.getLibelle());
+     if (exists){
+         throw new DuplicateEntryException("A Hotel was found with this Libelle");
+     }
+     Hotel savedHotel = hotelRepository.save(hotel);
+     return mapper.fromHotel(hotel);
     }
 
     @Override
-    public HotelDto updateHotel(HotelDto Hoteldto, Long id) {
-      Optional<Hotel>Hotel1 =hotelRepository.findById(id);
-      if(Hotel1.isPresent()){
-     Hotel Hotel2 =Hotel1.get();
-     Hotel Hotel3=hotelRepository.saveAndFlush(Hotel2);
-      return mapper.fromHotel(Hotel3);
+    public HotelDto updateHotel(HotelDto hoteldto, Long id) {
+      Optional<Hotel>hotel1 =hotelRepository.findById(id);
+      if(hotel1.isPresent()){
+     Hotel hotel2 =hotel1.get();
+      hotel2.setId(id);
+      hotelValidators.validate(hotel2);
+      if(hotelRepository.existsByLibelle(hotel2.getLibelle())){
+          throw  new DuplicateEntryException("A Hotel was Found with this Libelle");
+      }
+      Hotel hotel3 = hotelRepository.saveAndFlush(hotel2);
+      return  mapper.fromHotel(hotel3);
       }else {
-          throw  new NoSuchElementException("Hotel NotFound");
+          throw  new EntityNotFoundException("Hotel NotFound");
       }
     }
 
     @Override
     public void deleteHotel(Long id) {
-      hotelRepository.deleteById(id);
+        if(hotelRepository.findById(id).isPresent()){
+            hotelRepository.deleteById(id);
+        } else {
+            throw  new EntityNotFoundException("Hotel with this id Not Found");
+        }
+
     }
 
     public PageResponse<HotelDto> getHotels(int page, int size) {

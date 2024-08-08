@@ -3,9 +3,12 @@ import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.FactureDto;
 import com.hadjsalem.agencevoyage.entities.Destination;
 import com.hadjsalem.agencevoyage.entities.Facture;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.FactureMapper;
 import com.hadjsalem.agencevoyage.repositories.FactureRepository;
 import com.hadjsalem.agencevoyage.services.FactureService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +26,7 @@ import java.util.Optional;
 public class FactureServiceImpl implements FactureService {
     private FactureRepository factureRepository;
     private FactureMapper mapper;
-
+    private ObjectsValidators<Facture> factureValidators;
 
     @Override
     public FactureDto findFactureById(Long id) {
@@ -43,26 +46,43 @@ public class FactureServiceImpl implements FactureService {
 
     @Override
     public FactureDto saveFacture(FactureDto FactureDto) {
-      Facture Facture1 = mapper.fromFactureDto(FactureDto);
-      Facture Facture2= factureRepository.save(Facture1);
-      return mapper.fromFacture(Facture2);
+      Facture facture = mapper.fromFactureDto(FactureDto);
+      if(facture == null){
+          throw new IllegalArgumentException("Facture est null");
+      }
+       factureValidators.validate(facture);
+      boolean exists = factureRepository.existsByDesignation(facture.getDesignation());
+       if( exists){
+           throw new DuplicateEntryException("une Facture est existe avec Cette designation");
+       }
+       Facture savedFacture = factureRepository.save(facture);
+       return mapper.fromFacture(savedFacture);
     }
 
     @Override
     public FactureDto updateFacture(FactureDto Facturedto, Long id) {
-      Optional<Facture> Facture1 = factureRepository.findById(id);
-      if(Facture1.isPresent()){
-      Facture Facture2 = Facture1.get();
-      Facture Facture3= factureRepository.saveAndFlush(Facture2);
-      return mapper.fromFacture(Facture3);
-      }else {
-          throw  new NoSuchElementException("Facture NotFound");
-      }
+        Optional<Facture> facture1 = factureRepository.findById(id);
+        if (facture1.isPresent()) {
+            Facture facture2 = facture1.get();
+            facture2.setId(id);
+            factureValidators.validate(facture2);
+            if (factureRepository.existsByDesignation(facture2.getDesignation())) {
+                throw new DuplicateEntryException("une Facture est existe avec Cette designation");
+            }
+            Facture facture3 = factureRepository.saveAndFlush(facture2);
+            return mapper.fromFacture(facture3);
+        } else {
+            throw new EntityNotFoundException("Facture Not Found");
+        }
     }
-
     @Override
     public void deleteFacture(Long id) {
-       factureRepository.deleteById(id);
+        if(factureRepository.findById(id).isPresent()){
+            factureRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("facture with this id Not Found");
+        }
+
     }
 
     public PageResponse<FactureDto> getFactures(int page, int size) {

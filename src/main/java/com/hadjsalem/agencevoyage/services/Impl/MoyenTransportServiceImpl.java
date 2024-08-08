@@ -3,9 +3,12 @@ package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.MoyenTransportDto;
 import com.hadjsalem.agencevoyage.entities.MoyenTransport;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.MoyenTransportMapper;
 import com.hadjsalem.agencevoyage.repositories.MoyenTransportRepository;
 import com.hadjsalem.agencevoyage.services.MoyenTransportService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,18 +26,18 @@ import java.util.Optional;
 public class MoyenTransportServiceImpl implements MoyenTransportService {
     private MoyenTransportRepository moyenTransportRepository;
     private MoyenTransportMapper mapper;
-
+    private ObjectsValidators<MoyenTransport> moyenTransportValidators;
 
     @Override
     public MoyenTransportDto findMoyenTransportById(Long id) {
-    Optional<MoyenTransport> optionalMoyenTransport =moyenTransportRepository.findById(id);
-    return optionalMoyenTransport.map(mapper::fromMoyenTransport).orElseThrow(()->new NoSuchElementException("MoyenTransport Not Found"));
+        Optional<MoyenTransport> optionalMoyenTransport = moyenTransportRepository.findById(id);
+        return optionalMoyenTransport.map(mapper::fromMoyenTransport).orElseThrow(() -> new NoSuchElementException("MoyenTransport Not Found"));
 
     }
 
     @Override
     public MoyenTransportDto findMoyenTransportByNom(String email) {
-        Optional<MoyenTransport> moyenTransport= moyenTransportRepository.findMoyenTransportByNom(email);
+        Optional<MoyenTransport> moyenTransport = moyenTransportRepository.findMoyenTransportByNom(email);
         if (!moyenTransport.isPresent()) {
             throw new RuntimeException("Client Not Found");
         }
@@ -42,27 +45,44 @@ public class MoyenTransportServiceImpl implements MoyenTransportService {
     }
 
     @Override
-    public MoyenTransportDto saveMoyenTransport(MoyenTransportDto MoyenTransportDto) {
-      MoyenTransport MoyenTransport1 = mapper.fromMoyenTransportDto(MoyenTransportDto);
-      MoyenTransport MoyenTransport2= moyenTransportRepository.save(MoyenTransport1);
-      return mapper.fromMoyenTransport(MoyenTransport2);
+    public MoyenTransportDto saveMoyenTransport(MoyenTransportDto moyenTransportDto) {
+        MoyenTransport moyenTransport = mapper.fromMoyenTransportDto(moyenTransportDto);
+        if (moyenTransport == null) {
+            throw new IllegalArgumentException("Moyen Transport was null");
+        }
+        moyenTransportValidators.validate(moyenTransport);
+        boolean exists = moyenTransportRepository.existsByNom(moyenTransportDto.getNom());
+        if (exists) {
+            throw new DuplicateEntryException("moyen Transport with this Nom was Found");
+        }
+        MoyenTransport savedMoyenTransport = moyenTransportRepository.save(moyenTransport);
+        return mapper.fromMoyenTransport(savedMoyenTransport);
     }
 
     @Override
-    public MoyenTransportDto updateMoyenTransport(MoyenTransportDto MoyenTransportdto, Long id) {
-      Optional<MoyenTransport> MoyenTransport1 = moyenTransportRepository.findById(id);
-      if(MoyenTransport1.isPresent()){
-      MoyenTransport MoyenTransport2 = MoyenTransport1.get();
-      MoyenTransport MoyenTransport3= moyenTransportRepository.saveAndFlush(MoyenTransport2);
-      return mapper.fromMoyenTransport(MoyenTransport3);
-      }else {
-          throw  new NoSuchElementException("MoyenTransport NotFound");
-      }
+    public MoyenTransportDto updateMoyenTransport(MoyenTransportDto moyenTransportdto, Long id) {
+        Optional<MoyenTransport> moyenTransport1 = moyenTransportRepository.findById(id);
+        if (moyenTransport1.isPresent()) {
+            MoyenTransport moyenTransport2 = moyenTransport1.get();
+            moyenTransport2.setId(id);
+            moyenTransportValidators.validate(moyenTransport2);
+            if (moyenTransportRepository.existsByNom(moyenTransport2.getNom())) {
+                throw new DuplicateEntryException("A moyen Transport was Found with this Nom");
+            }
+            MoyenTransport moyenTransport3= moyenTransportRepository.saveAndFlush(moyenTransport2);
+            return mapper.fromMoyenTransport(moyenTransport3);
+        } else {
+            throw new EntityNotFoundException("MoyenTransport NotFound");
+        }
     }
-
     @Override
     public void deleteMoyenTransport(Long id) {
-       moyenTransportRepository.deleteById(id);
+        if(moyenTransportRepository.findById(id).isPresent()){
+            moyenTransportRepository.deleteById(id);
+        } else {
+            throw  new EntityNotFoundException("moyen Transport with this Nom not Found");
+        }
+
     }
 
     public PageResponse<MoyenTransportDto> getMoyenTransports(int page, int size) {

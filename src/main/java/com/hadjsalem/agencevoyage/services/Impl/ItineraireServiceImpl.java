@@ -3,9 +3,12 @@ import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.ItineraireDto;
 import com.hadjsalem.agencevoyage.entities.Hotel;
 import com.hadjsalem.agencevoyage.entities.Itineraire;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.ItineraireMapper;
 import com.hadjsalem.agencevoyage.repositories.ItineraireRepository;
 import com.hadjsalem.agencevoyage.services.ItineraireService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class ItineraireServiceImpl implements ItineraireService {
     private ItineraireRepository itineraireRepository;
     private ItineraireMapper mapper;
+    private ObjectsValidators<Itineraire> itineraireValidators;
 
 
     @Override
@@ -42,27 +46,45 @@ public class ItineraireServiceImpl implements ItineraireService {
     }
 
     @Override
-    public ItineraireDto saveItineraire(ItineraireDto ItineraireDto) {
-      Itineraire Itineraire1 = mapper.fromItineraireDto(ItineraireDto);
-      Itineraire Itineraire2= itineraireRepository.save(Itineraire1);
-      return mapper.fromItineraire(Itineraire2);
+    public ItineraireDto saveItineraire(ItineraireDto itineraireDto) {
+      Itineraire itineraire = mapper.fromItineraireDto(itineraireDto);
+      if( itineraire == null){
+          throw new IllegalArgumentException("Itineraire was Null");
+      }
+      itineraireValidators.validate(itineraire);
+      boolean exists = itineraireRepository.existsByLibelle(itineraireDto.getLibelle());
+     if(exists) {
+         throw  new DuplicateEntryException("Itineraire was Found with this Libelle");
+     }
+     Itineraire saveditineraire = itineraireRepository.save(itineraire);
+     return mapper.fromItineraire(itineraire);
     }
 
     @Override
-    public ItineraireDto updateItineraire(ItineraireDto Itinerairedto, Long id) {
-      Optional<Itineraire> Itineraire1 = itineraireRepository.findById(id);
-      if(Itineraire1.isPresent()){
-      Itineraire Itineraire2 = Itineraire1.get();
-      Itineraire Itineraire3= itineraireRepository.saveAndFlush(Itineraire2);
-      return mapper.fromItineraire(Itineraire3);
+    public ItineraireDto updateItineraire(ItineraireDto itinerairedto, Long id) {
+      Optional<Itineraire> itineraire1 = itineraireRepository.findById(id);
+      if(itineraire1.isPresent()){
+      Itineraire itineraire2 = itineraire1.get();
+      itineraire2.setId(id);
+      itineraireValidators.validate(itineraire2);
+      if(itineraireRepository.existsByLibelle(itineraire2.getLibelle())){
+          throw new DuplicateEntryException("A Itineraire was Found with this Libelle" );
+      }
+      Itineraire itineraire3 =itineraireRepository.saveAndFlush(itineraire2);
+      return mapper.fromItineraire(itineraire3);
       }else {
-          throw  new NoSuchElementException("Itineraire NotFound");
+          throw  new EntityNotFoundException("Itineraire NotFound");
       }
     }
 
     @Override
     public void deleteItineraire(Long id) {
-       itineraireRepository.deleteById(id);
+        if(itineraireRepository.findById(id).isPresent()){
+            itineraireRepository.deleteById(id);
+        } else {
+            throw  new EntityNotFoundException("Iteneraire with thi sid Not Found");
+        }
+
     }
 
 

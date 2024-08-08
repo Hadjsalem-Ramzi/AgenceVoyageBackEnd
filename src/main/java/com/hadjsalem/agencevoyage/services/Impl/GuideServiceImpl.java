@@ -4,9 +4,12 @@ import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.GuideDto;
 import com.hadjsalem.agencevoyage.entities.Guide;
 import com.hadjsalem.agencevoyage.entities.GuidePersonne;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.GuideMapper;
 import com.hadjsalem.agencevoyage.repositories.GuideRepository;
 import com.hadjsalem.agencevoyage.services.GuideService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +27,7 @@ import java.util.Optional;
 public class GuideServiceImpl implements GuideService {
     private GuideRepository guideRepository;
     private GuideMapper mapper;
-
+    private ObjectsValidators<Guide> guideValidators;
 
     @Override
     public GuideDto findGuideById(Long id) {
@@ -42,27 +45,45 @@ public class GuideServiceImpl implements GuideService {
         return mapper.fromGuide(guide.get());
     }
     @Override
-    public GuideDto saveGuide(GuideDto GuideDto) {
-      Guide Guide1 = mapper.fromGuideDto(GuideDto);
-      Guide Guide2= guideRepository.save(Guide1);
-      return mapper.fromGuide(Guide2);
+    public GuideDto saveGuide(GuideDto guideDto) {
+      Guide guide = mapper.fromGuideDto(guideDto);
+      if(guide == null){
+          throw new IllegalArgumentException("Guide Not Found");
+      }
+      guideValidators.validate(guide);
+      boolean exists = guideRepository.existsByNumTel(guideDto.getNumTel());
+      if( exists){
+          throw new DuplicateEntryException(" A Guid was found with this NumTélephone");
+      }
+      Guide savedGuide = guideRepository.save(guide);
+      return mapper.fromGuide(guide);
     }
 
     @Override
-    public GuideDto updateGuide(GuideDto Guidedto, Long id) {
-      Optional<Guide> Guide1 = guideRepository.findById(id);
-      if(Guide1.isPresent()){
-      Guide Guide2 = Guide1.get();
-      Guide Guide3= guideRepository.saveAndFlush(Guide2);
-      return mapper.fromGuide(Guide3);
+    public GuideDto updateGuide(GuideDto guidedto, Long id) {
+      Optional<Guide> guide1 = guideRepository.findById(id);
+      if(guide1.isPresent()){
+      Guide guide2 = guide1.get();
+      guide2.setId(id);
+      guideValidators.validate(guide2);
+      if(guideRepository.existsByNumTel(guide2.getNumTel())){
+          throw new DuplicateEntryException("A Guide was Found with this Télephone");
+      }
+      Guide guide3 = guideRepository.saveAndFlush(guide2);
+      return  mapper.fromGuide(guide3);
       }else {
-          throw  new NoSuchElementException("Guide NotFound");
+          throw  new EntityNotFoundException("Guide NotFound");
       }
     }
 
     @Override
     public void deleteGuide(Long id) {
-       guideRepository.deleteById(id);
+        if( guideRepository.findById(id).isPresent()){
+            guideRepository.deleteById(id);
+        }
+          else {
+              throw new EntityNotFoundException("Guide was Not Found");
+        }
     }
 
     public PageResponse<GuideDto> getGuides(int page, int size) {

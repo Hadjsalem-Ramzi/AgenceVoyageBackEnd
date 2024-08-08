@@ -3,9 +3,12 @@ import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.GuidePapierDto;
 import com.hadjsalem.agencevoyage.entities.Facture;
 import com.hadjsalem.agencevoyage.entities.GuidePapier;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.GuidePapierMapper;
 import com.hadjsalem.agencevoyage.repositories.GuidePapierRepository;
 import com.hadjsalem.agencevoyage.services.GuidePapierService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +26,7 @@ import java.util.Optional;
 public class GuidePapierServiceImpl implements GuidePapierService {
     private GuidePapierRepository guidePapierRepository;
     private GuidePapierMapper mapper;
-
+    private ObjectsValidators<GuidePapier> guidePapierValidators;
 
     @Override
     public GuidePapierDto findGuidePapierById(Long id) {
@@ -43,27 +46,48 @@ public class GuidePapierServiceImpl implements GuidePapierService {
     }
 
     @Override
-    public GuidePapierDto saveGuidePapier(GuidePapierDto GuidePapierDto) {
-      GuidePapier GuidePapier1 = mapper.fromGuidePapierDto(GuidePapierDto);
-      GuidePapier GuidePapier2= guidePapierRepository.save(GuidePapier1);
-      return mapper.fromGuidePapier(GuidePapier2);
+    public GuidePapierDto saveGuidePapier(GuidePapierDto guidePapierDto) {
+      GuidePapier guidePapier = mapper.fromGuidePapierDto(guidePapierDto);
+       if(guidePapier == null){
+           throw new IllegalArgumentException("guide Papier Not Found");
+       }
+       guidePapierValidators.validate(guidePapier);
+       boolean exists = guidePapierRepository.existsByLibelle(guidePapierDto.getLibelle());
+       if(exists){
+           throw new DuplicateEntryException("un Guide Papier est existe avec Cette Libelle");
+       }
+       GuidePapier savedGuidePapier= guidePapierRepository.save(guidePapier);
+       return mapper.fromGuidePapier(guidePapier);
     }
 
     @Override
-    public GuidePapierDto updateGuidePapier(GuidePapierDto GuidePapierdto, Long id) {
-      Optional<GuidePapier> GuidePapier1 = guidePapierRepository.findById(id);
-      if(GuidePapier1.isPresent()){
-      GuidePapier GuidePapier2 = GuidePapier1.get();
-      GuidePapier GuidePapier3= guidePapierRepository.saveAndFlush(GuidePapier2);
-      return mapper.fromGuidePapier(GuidePapier3);
-      }else {
-          throw  new NoSuchElementException("GuidePapier NotFound");
-      }
+    public GuidePapierDto updateGuidePapier(GuidePapierDto guidePapierDto, Long id) {
+      Optional<GuidePapier> guidePapier1 = guidePapierRepository.findById(id);
+      if(guidePapier1.isPresent()) {
+          GuidePapier guidePapier2 = guidePapier1.get();
+          guidePapier2.setId(id);
+          guidePapierValidators.validate(guidePapier2);
+          if (guidePapierRepository.existsByLibelle(guidePapier2.getLibelle())) {
+              throw new DuplicateEntryException("Un guide Papier was found with this Libelle");
+          }
+          GuidePapier guidePapier3 = guidePapierRepository.saveAndFlush(guidePapier2);
+          return mapper.fromGuidePapier(guidePapier3);
+          }
+
+          else{
+              throw new EntityNotFoundException("Guide Papier Not Found");
+          }
     }
 
     @Override
     public void deleteGuidePapier(Long id) {
-       guidePapierRepository.deleteById(id);
+
+        if(guidePapierRepository.findById(id).isPresent()){
+            guidePapierRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Guide Papier with this id Not Found");
+        }
+
     }
 
     public PageResponse<GuidePapierDto> getGuidePapiers(int page, int size) {

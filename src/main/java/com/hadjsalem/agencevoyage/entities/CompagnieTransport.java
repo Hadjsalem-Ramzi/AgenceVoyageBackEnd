@@ -17,7 +17,7 @@ import java.util.List;
 public class CompagnieTransport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id ;
+    private Long id ;
     @NotNull( message= "Cette Champ ne peut pas être null.")
     @NotEmpty(message = "Cette Champ ne peut pas être vide.")
     @NotBlank(message = "Cette Champ ne peut pas être composé uniquement d'espaces blancs.")

@@ -3,9 +3,12 @@ package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.TransportCommunDto;
 import com.hadjsalem.agencevoyage.entities.TransportCommun;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.TransportCommunMapper;
 import com.hadjsalem.agencevoyage.repositories.TransportCommunRepository;
 import com.hadjsalem.agencevoyage.services.TransportCommunService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class TransportCommunServiceImpl implements TransportCommunService {
     private TransportCommunRepository transportCommunRepository;
     private TransportCommunMapper mapper;
+    private ObjectsValidators<TransportCommun> transportCommunValidators;
 
 
     @Override
@@ -41,19 +45,31 @@ public class TransportCommunServiceImpl implements TransportCommunService {
     }
 
     @Override
-    public TransportCommunDto saveTransportCommun(TransportCommunDto TransportCommunDto) {
-      TransportCommun TransportCommun1 = mapper.fromTransportCommunDto(TransportCommunDto);
-      TransportCommun TransportCommun2= transportCommunRepository.save(TransportCommun1);
-      return mapper.fromTransportCommun(TransportCommun2);
+    public TransportCommunDto saveTransportCommun(TransportCommunDto transportCommunDto) {
+      TransportCommun transportCommun1 = mapper.fromTransportCommunDto(transportCommunDto);
+     if( transportCommun1 == null){
+         throw  new IllegalArgumentException("transportCommun1 est null");
+     }
+     transportCommunValidators.validate(transportCommun1);
+     boolean exists = transportCommunRepository.existsByNumTel(transportCommun1.getNumTel());
+     if(exists){
+         throw  new DuplicateEntryException("transport Commun  avec ce numéro existe");
+     }
+     return  mapper.fromTransportCommun(transportCommun1);
     }
 
     @Override
-    public TransportCommunDto updateTransportCommun(TransportCommunDto TransportCommundto, Long id) {
-      Optional<TransportCommun> TransportCommun1 = transportCommunRepository.findById(id);
-      if(TransportCommun1.isPresent()){
-      TransportCommun TransportCommun2 = TransportCommun1.get();
-      TransportCommun TransportCommun3= transportCommunRepository.saveAndFlush(TransportCommun2);
-      return mapper.fromTransportCommun(TransportCommun3);
+    public TransportCommunDto updateTransportCommun(TransportCommunDto transportCommundto, Long id) {
+      Optional<TransportCommun> transportCommun1 = transportCommunRepository.findById(id);
+      if(transportCommun1.isPresent()){
+      TransportCommun transportCommun2 = transportCommun1.get();
+        transportCommun2.setId(id);
+        transportCommunValidators.validate(transportCommun2);
+        if(transportCommunRepository.existsByNumTel(transportCommun2.getNumTel())){
+            throw new DuplicateEntryException("un transport Commun with this Numéro Tél existe");
+        }
+        TransportCommun transportCommun3 = transportCommunRepository.saveAndFlush(transportCommun2);
+        return mapper.fromTransportCommun(transportCommun3);
       }else {
           throw  new NoSuchElementException("TransportCommun NotFound");
       }
@@ -61,7 +77,12 @@ public class TransportCommunServiceImpl implements TransportCommunService {
 
     @Override
     public void deleteTransportCommun(Long id) {
-       transportCommunRepository.deleteById(id);
+        if( transportCommunRepository.findById(id).isPresent()){
+            transportCommunRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("transport with this id not Found");
+        }
+
     }
 
     public PageResponse<TransportCommunDto> getTransportCommuns(int page, int size) {

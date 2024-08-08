@@ -14,7 +14,7 @@ import java.util.List;
 public class TransportCommun  extends CompagnieTransport{
 
     private  Integer capacite;
-    public TransportCommun(Integer id, String nom, Integer numTel, Integer capacite) {
+    public TransportCommun(Long id, String nom, Integer numTel, Integer capacite) {
         super();
         this.setNom(nom);
         this.setId(id);

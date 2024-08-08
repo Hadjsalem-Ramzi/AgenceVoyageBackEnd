@@ -3,11 +3,14 @@ package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.SocieteLocationDto;
 import com.hadjsalem.agencevoyage.entities.SocieteLocation;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.SocieteLocationMapper;
 import com.hadjsalem.agencevoyage.mapper.SocieteLocationMapper;
 import com.hadjsalem.agencevoyage.repositories.SocieteLocationRepository;
 import com.hadjsalem.agencevoyage.repositories.SocieteLocationRepository;
 import com.hadjsalem.agencevoyage.services.SocieteLocationService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +29,7 @@ import java.util.Optional;
 public class SocieteLocationServiceImpl implements SocieteLocationService {
     private SocieteLocationRepository  societeLocationRepository;
     private SocieteLocationMapper mapper;
-
+    private ObjectsValidators<SocieteLocation> societeLocationValidators;
 
     @Override
     public SocieteLocationDto findSocieteLocationById(Long id) {
@@ -44,27 +47,45 @@ public class SocieteLocationServiceImpl implements SocieteLocationService {
         return mapper.fromSocieteLocation(SocieteLocation.get());
     }
     @Override
-    public SocieteLocationDto saveSocieteLocation(SocieteLocationDto SocieteLocationDto) {
-      SocieteLocation SocieteLocation1 = mapper.fromSocieteLocationDto(SocieteLocationDto);
-      SocieteLocation SocieteLocation2= societeLocationRepository.save(SocieteLocation1);
-      return mapper.fromSocieteLocation(SocieteLocation2);
+    public SocieteLocationDto saveSocieteLocation(SocieteLocationDto societeLocationDto) {
+      SocieteLocation societeLocation = mapper.fromSocieteLocationDto(societeLocationDto);
+     if( societeLocation == null){
+         throw new IllegalArgumentException("SocieteLocation est null");
+     }
+     societeLocationValidators.validate(societeLocation);
+     boolean exists = societeLocationRepository.existsByNumTel(societeLocation.getNumTel());
+     if(exists){
+         throw new DuplicateEntryException("un societe Location est existe avec cette NumTélephone");
+     }
+     SocieteLocation savedSocieteLocation = societeLocationRepository.save(societeLocation);
+     return mapper.fromSocieteLocation(savedSocieteLocation);
     }
 
     @Override
-    public SocieteLocationDto updateSocieteLocation(SocieteLocationDto SocieteLocationdto, Long id) {
-      Optional<SocieteLocation> SocieteLocation1 = societeLocationRepository.findById(id);
-      if(SocieteLocation1.isPresent()){
-      SocieteLocation SocieteLocation2 = SocieteLocation1.get();
-      SocieteLocation SocieteLocation3= societeLocationRepository.saveAndFlush(SocieteLocation2);
-      return mapper.fromSocieteLocation(SocieteLocation3);
-      }else {
-          throw  new NoSuchElementException("SocieteLocation NotFound");
-      }
+    public SocieteLocationDto updateSocieteLocation(SocieteLocationDto societeLocationdto, Long id) {
+        Optional<SocieteLocation> societeLocation1 = societeLocationRepository.findById(id);
+        if (societeLocation1.isPresent()) {
+            SocieteLocation societeLocation2 = societeLocation1.get();
+            societeLocation2.setId(id);
+            societeLocationValidators.validate(societeLocation2);
+            if(societeLocationRepository.existsByNumTel(societeLocation2.getNumTel())){
+                throw  new DuplicateEntryException("un chauffeur avec ce numéro de télephone existe déjà");
+            }
+            SocieteLocation societeLocation3 = societeLocationRepository.saveAndFlush(societeLocation2);
+            return mapper.fromSocieteLocation(societeLocation3);
+        } else {
+            throw  new EntityNotFoundException("societeLocation Not Found");
+        }
     }
 
     @Override
     public void deleteSocieteLocation(Long id) {
-       societeLocationRepository.deleteById(id);
+        if(societeLocationRepository.findById(id).isPresent()){
+            societeLocationRepository.deleteById(id);
+        } else {
+            throw  new EntityNotFoundException("societeLocation with this id Not Found");
+        }
+
     }
 
     public PageResponse<SocieteLocationDto> getSocieteLocations(int page, int size) {

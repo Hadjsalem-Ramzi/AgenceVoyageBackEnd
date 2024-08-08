@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @Builder
 public class TransportCommunDto {
-  private   Integer id;
+  private  Long id;
   private   String nom;
   private   Integer numTel;
   private   Integer capacite;

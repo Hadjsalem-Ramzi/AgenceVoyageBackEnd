@@ -3,9 +3,12 @@ package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.VehiculeDto;
 import com.hadjsalem.agencevoyage.entities.Vehicule;
+import com.hadjsalem.agencevoyage.exceptions.DuplicateEntryException;
 import com.hadjsalem.agencevoyage.mapper.VehiculeMapper;
 import com.hadjsalem.agencevoyage.repositories.VehiculeRepository;
 import com.hadjsalem.agencevoyage.services.VehiculeService;
+import com.hadjsalem.agencevoyage.validators.ObjectsValidators;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +26,7 @@ import java.util.Optional;
 public class VehiculeServiceImpl implements VehiculeService {
     private VehiculeRepository vehiculeRepository;
     private VehiculeMapper mapper;
-
+    private ObjectsValidators<Vehicule> vehiculeValidators;
 
     @Override
     public VehiculeDto findVehiculeById(Long id) {
@@ -41,19 +44,32 @@ public class VehiculeServiceImpl implements VehiculeService {
     }
 
     @Override
-    public VehiculeDto saveVehicule(VehiculeDto VehiculeDto) {
-      Vehicule Vehicule1 = mapper.fromVehiculeDto(VehiculeDto);
-      Vehicule Vehicule2= vehiculeRepository.save(Vehicule1);
-      return mapper.fromVehicule(Vehicule2);
+    public VehiculeDto saveVehicule(VehiculeDto vehiculeDto) {
+      Vehicule vehicule = mapper.fromVehiculeDto(vehiculeDto);
+      if( vehicule == null){
+          throw  new IllegalArgumentException("vehicule est null");
+      }
+      vehiculeValidators.validate(vehicule);
+      boolean exists= vehiculeRepository.existsByImmatricule(vehiculeDto.getImmatricule());
+      if(exists) {
+          throw new DuplicateEntryException("une vehicule avec cette Immatriculation est existe");
+      }
+      Vehicule savedVehicule = vehiculeRepository.save(vehicule);
+      return  mapper.fromVehicule(savedVehicule);
     }
 
     @Override
-    public VehiculeDto updateVehicule(VehiculeDto Vehiculedto, Long id) {
-      Optional<Vehicule> Vehicule1 = vehiculeRepository.findById(id);
-      if(Vehicule1.isPresent()){
-      Vehicule Vehicule2 = Vehicule1.get();
-      Vehicule Vehicule3= vehiculeRepository.saveAndFlush(Vehicule2);
-      return mapper.fromVehicule(Vehicule3);
+    public VehiculeDto updateVehicule(VehiculeDto vehiculedto, Long id) {
+      Optional<Vehicule> vehicule1 = vehiculeRepository.findById(id);
+      if(vehicule1.isPresent()){
+      Vehicule vehicule2 = vehicule1.get();
+      vehicule2.setId(id);
+      vehiculeValidators.validate(vehicule2);
+      if( vehiculeRepository.existsByImmatricule(vehicule2.getImmatricule())){
+          throw new DuplicateEntryException("une vehicule avec cette immatriculation est existe");
+      }
+       Vehicule vehicule3= vehiculeRepository.saveAndFlush(vehicule2);
+      return mapper.fromVehicule(vehicule3);
       }else {
           throw  new NoSuchElementException("Vehicule NotFound");
       }
@@ -61,7 +77,12 @@ public class VehiculeServiceImpl implements VehiculeService {
 
     @Override
     public void deleteVehicule(Long id) {
-       vehiculeRepository.deleteById(id);
+        if(vehiculeRepository.findById(id).isPresent()){
+            vehiculeRepository.deleteById(id);
+        }
+         else {
+             throw new EntityNotFoundException("vehicule with this id Not Found");
+        }
     }
 
     public PageResponse<VehiculeDto> getVehicules(int page, int size) {
