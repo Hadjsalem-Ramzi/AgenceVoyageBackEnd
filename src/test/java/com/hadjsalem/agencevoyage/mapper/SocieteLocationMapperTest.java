@@ -22,8 +22,8 @@ class SocieteLocationMapperTest {
     @Test
     public void ShouldMapSocieteLocationToSocieteLocationDto(){
 
-        SocieteLocation givenSocieteLocation = new SocieteLocation(1,"Hannibaal",785623548);
-        SocieteLocationDto  expected = new SocieteLocationDto(1,"Hannibaal",785623548);
+        SocieteLocation givenSocieteLocation = new SocieteLocation(1L,"Hannibaal",785623548);
+        SocieteLocationDto  expected = new SocieteLocationDto(1L,"Hannibaal",785623548);
 
         SocieteLocationDto result = underTest.fromSocieteLocation(givenSocieteLocation);
 
@@ -35,8 +35,8 @@ class SocieteLocationMapperTest {
     @Test
     public void ShouldMapSocieteLocationDtoToSocieteLocation(){
 
-        SocieteLocationDto givenSocieteLocation = new SocieteLocationDto(1,"Hannibaal",785623548);
-        SocieteLocation  expected = new SocieteLocation(1,"Hannibaal",785623548);
+        SocieteLocationDto givenSocieteLocation = new SocieteLocationDto(1L,"Hannibaal",785623548);
+        SocieteLocation  expected = new SocieteLocation(1L,"Hannibaal",785623548);
 
         SocieteLocation result = underTest.fromSocieteLocationDto(givenSocieteLocation);
 

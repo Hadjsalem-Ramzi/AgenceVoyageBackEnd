@@ -19,8 +19,8 @@ class TransportCommunMapperTest {
 
     @Test
     public void ShouldMapTransportCommunToTransportCommunDto(){
-        TransportCommun givenTransportCommun = new TransportCommun(1,"Autobus",87654321,200);
-        TransportCommunDto expected = new TransportCommunDto(1,"Autobus",87654321,200);
+        TransportCommun givenTransportCommun = new TransportCommun(1L,"Autobus",87654321,200);
+        TransportCommunDto expected = new TransportCommunDto(1L,"Autobus",87654321,200);
 
         TransportCommunDto result = underTest.fromTransportCommun(givenTransportCommun);
 
@@ -31,8 +31,8 @@ class TransportCommunMapperTest {
 
     @Test
     public void ShouldMapTransportCommunDtoToTransportCommun(){
-        TransportCommunDto givenTransportCommun = new TransportCommunDto(1,"Autobus",87654321,200);
-        TransportCommun expected = new TransportCommun(1,"Autobus",87654321,200);
+        TransportCommunDto givenTransportCommun = new TransportCommunDto(1L,"Autobus",87654321,200);
+        TransportCommun expected = new TransportCommun(1L,"Autobus",87654321,200);
 
         TransportCommun result = underTest.fromTransportCommunDto(givenTransportCommun);
 

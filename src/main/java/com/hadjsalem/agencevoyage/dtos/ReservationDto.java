@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,5 +16,5 @@ public class ReservationDto {
 private Long id;
 private LocalDate dateReservation;
 private LocalTime HeureReservation;
-private Long dureSejour;
+private Period dureSejour;
 }

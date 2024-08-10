@@ -31,7 +31,7 @@ public class MoyenTransportServiceImpl implements MoyenTransportService {
     @Override
     public MoyenTransportDto findMoyenTransportById(Long id) {
         Optional<MoyenTransport> optionalMoyenTransport = moyenTransportRepository.findById(id);
-        return optionalMoyenTransport.map(mapper::fromMoyenTransport).orElseThrow(() -> new NoSuchElementException("MoyenTransport Not Found"));
+        return optionalMoyenTransport.map(mapper::fromMoyenTransport).orElseThrow(() -> new EntityNotFoundException("MoyenTransport Not Found"));
 
     }
 
@@ -39,7 +39,7 @@ public class MoyenTransportServiceImpl implements MoyenTransportService {
     public MoyenTransportDto findMoyenTransportByNom(String email) {
         Optional<MoyenTransport> moyenTransport = moyenTransportRepository.findMoyenTransportByNom(email);
         if (!moyenTransport.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("MoyenTransport Not Found");
         }
         return mapper.fromMoyenTransport(moyenTransport.get());
     }

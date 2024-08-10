@@ -1,4 +1,4 @@
-/*
+
 package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.CompagnieTransportDto;
@@ -51,7 +51,7 @@ class CompagnieTransportServiceImplTest {
     void shouldSaveNewCompagnieTransport(){
         CompagnieTransportDto compagnieTransportDto=CompagnieTransportDto.builder().nom("Hanibaal").numTel(97852364).build();
         CompagnieTransport compagnieTransport=CompagnieTransport.builder().nom("Hanibaal").numTel(97852364).build();
-        CompagnieTransport savedCompagnieTransport= CompagnieTransport.builder().id(1).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport savedCompagnieTransport= CompagnieTransport.builder().id(1L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto expectedCompagnieTransport= CompagnieTransportDto.builder().id(1L).nom("Hanibaal").numTel(97852364).build();
 
         when(compagnieTransportMapper.fromCompagnieTransportDto(compagnieTransportDto)).thenReturn(compagnieTransport);
@@ -76,7 +76,7 @@ class CompagnieTransportServiceImplTest {
 
         assertThatThrownBy(() -> underTest.saveCompagnieTransport(compagnieTransportDto))
                 .isInstanceOf(DuplicateEntryException.class)
-                .hasMessage("un CompagnieTransport est existe avec cette email");
+                .hasMessage("un compagnie Transport exist avec cette numéro de Télephone");
 
         verify(compagnieTransportRepository, times(1)).existsByNumTel(compagnieTransportDto.getNumTel());
         verify(compagnieTransportRepository, never()).save(any(CompagnieTransport.class));
@@ -84,9 +84,9 @@ class CompagnieTransportServiceImplTest {
     @Test
     void ShouldGetAllCompagnieTransports() {
         CompagnieTransport compagnieTransport1 = new CompagnieTransport();
-        compagnieTransport1.setId(1);
+        compagnieTransport1.setId(1L);
         CompagnieTransport compagnieTransport2 = new CompagnieTransport();
-        compagnieTransport2.setId(2);
+        compagnieTransport2.setId(2L);
         List<CompagnieTransport> CompagnieTransports = Arrays.asList(compagnieTransport1, compagnieTransport2);
         Page<CompagnieTransport> pageCompagnieTransports = new PageImpl<>(CompagnieTransports);
 
@@ -113,14 +113,14 @@ class CompagnieTransportServiceImplTest {
         assertEquals(true, result.isFirst());
         assertEquals(true, result.isLast());
     }
-*/
-/*****         Test GetById Method                **//*
+
+/*****         Test GetById Method                **/
 
 
     @Test
     void ShouldFindCompagnieTransportById() {
         Long givenCompagnieTransportId = 1L;
-        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(1).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(1L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto expected = CompagnieTransportDto.builder().id(1L).nom("Hanibaal").numTel(97852364).build();
         when(compagnieTransportRepository.findById(givenCompagnieTransportId)).thenReturn(Optional.of(compagnieTransport));
         when(compagnieTransportMapper.fromCompagnieTransport(compagnieTransport)).thenReturn(expected);
@@ -138,8 +138,8 @@ class CompagnieTransportServiceImplTest {
 
     }
 
-*/
-/**                Test Method FindCompagnieTransportByNumTel                    ***********//*
+
+/**                Test Method FindCompagnieTransportByNumTel                    ***********/
 
 
     @Test
@@ -158,7 +158,7 @@ class CompagnieTransportServiceImplTest {
     }
 
     @Test
-    void ShouldNotfindCompagnieTransportByEmail() {
+    void ShouldNotfindCompagnieTransportByNom() {
         String  givenNom= "Hanibaal";
 
         when(compagnieTransportRepository.findCompagnieTransportByNom(givenNom)).thenReturn(Optional.empty());
@@ -167,17 +167,17 @@ class CompagnieTransportServiceImplTest {
     }
 
 
-*/
-/**    Test  Method updateCompagnieTransport *****//*
+
+/**    Test  Method updateCompagnieTransport *****/
 
 
 
     @Test
     void ShouldUpdateCompagnieTransport() {
         Long givenCompagnieTransportId = 2L;
-        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(2).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto compagnieTransportDto = CompagnieTransportDto.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
-        CompagnieTransport updatedCompagnieTransport = CompagnieTransport.builder().id(2).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport updatedCompagnieTransport = CompagnieTransport.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto expected = CompagnieTransportDto.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
 
         when(compagnieTransportRepository.findById(givenCompagnieTransportId)).thenReturn(Optional.of(compagnieTransport));
@@ -195,9 +195,9 @@ class CompagnieTransportServiceImplTest {
     @Test
     void ShouldNotUpdateCompagnieTransport() {
         Long givenCompagnieTransportId = 2L;
-        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(2).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto compagnieTransportDto = CompagnieTransportDto.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
-        CompagnieTransport updatedCompagnieTransport = CompagnieTransport.builder().id(2).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport updatedCompagnieTransport = CompagnieTransport.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto expected = CompagnieTransportDto.builder().id(2L).nom("Hanibaal").numTel(97852364).build();
 
         when(compagnieTransportRepository.findById(givenCompagnieTransportId)).thenReturn(Optional.of(compagnieTransport));
@@ -228,7 +228,7 @@ class CompagnieTransportServiceImplTest {
     void shouldThrowExceptionWhenUpdateFails() {
         Long givenCompagnieTransportId = 2L;
         CompagnieTransport compagnieTransport = CompagnieTransport.builder()
-                .id(2)
+                .id(2L)
                 .nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto compagnieTransportDto = CompagnieTransportDto.builder()
                 .id(2L)
@@ -245,7 +245,7 @@ class CompagnieTransportServiceImplTest {
     void shouldReturnExceptionWhenCompagnieTransportDtoIsInvalid() {
         Long givenCompagnieTransportId = 2L;
         CompagnieTransport compagnieTransport = CompagnieTransport.builder()
-                .id(2)
+                .id(2L)
                 .nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto invalidCompagnieTransportDto = CompagnieTransportDto.builder()
                 .id(2L)
@@ -265,15 +265,15 @@ class CompagnieTransportServiceImplTest {
 
 
 
-*/
-/***             Test Méthod Delete       *********//*
+
+/***             Test Méthod Delete       *********/
 
 
 
     @Test
     void shouldDeleteCompagnieTransportById() {
         Long CompagnieTransportId = 1L;
-        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(1).nom("Hanibaal").numTel(97852364).build();
+        CompagnieTransport compagnieTransport = CompagnieTransport.builder().id(1L).nom("Hanibaal").numTel(97852364).build();
         CompagnieTransportDto compagnieTransportDto = CompagnieTransportDto.builder().id(1L).nom("Hanibaal").numTel(97852364).build();
         when(compagnieTransportRepository.findById(compagnieTransportDto.getId())).thenReturn(Optional.of(compagnieTransport));
         underTest.deleteCompagnieTransport(CompagnieTransportId);
@@ -290,10 +290,10 @@ class CompagnieTransportServiceImplTest {
         // Simuler que le CompagnieTransport n'existe pas en faisant en sorte que l'Optional soit vide
         when(compagnieTransportRepository.findById(CompagnieTransportId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(()->underTest.deleteCompagnieTransport(CompagnieTransportId)).isInstanceOf(EntityNotFoundException.class).hasMessage("CompagnieTransport with this id Not Found");
+        assertThatThrownBy(()->underTest.deleteCompagnieTransport(CompagnieTransportId)).isInstanceOf(EntityNotFoundException.class).hasMessage("Compagnie Transport with this Id Not Found");
     }
 
 }
 
 
-*/
+

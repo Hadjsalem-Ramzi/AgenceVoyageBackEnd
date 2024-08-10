@@ -31,7 +31,7 @@ public class GuidePapierServiceImpl implements GuidePapierService {
     @Override
     public GuidePapierDto findGuidePapierById(Long id) {
     Optional<GuidePapier> optionalGuidePapier =guidePapierRepository.findById(id);
-    return optionalGuidePapier.map(mapper::fromGuidePapier).orElseThrow(()->new NoSuchElementException("GuidePapier Not Found"));
+    return optionalGuidePapier.map(mapper::fromGuidePapier).orElseThrow(()->new EntityNotFoundException("GuidePapier Not Found"));
 
     }
 
@@ -40,7 +40,7 @@ public class GuidePapierServiceImpl implements GuidePapierService {
 
         Optional<GuidePapier> guidePapier = guidePapierRepository.findGuidePapierByLibelle(libelle);
         if (!guidePapier.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new RuntimeException("GuidePapier Not Found");
         }
         return mapper.fromGuidePapier(guidePapier.get());
     }
@@ -57,7 +57,7 @@ public class GuidePapierServiceImpl implements GuidePapierService {
            throw new DuplicateEntryException("un Guide Papier est existe avec Cette Libelle");
        }
        GuidePapier savedGuidePapier= guidePapierRepository.save(guidePapier);
-       return mapper.fromGuidePapier(guidePapier);
+       return mapper.fromGuidePapier(savedGuidePapier);
     }
 
     @Override

@@ -19,7 +19,7 @@ class TransportCommunRepositoryTest {
 
     @BeforeEach
     public void SetUp(){
-        transportCommunRepository.save(new TransportCommun(1,"AZERTY",54610235,100));
+        transportCommunRepository.save(new TransportCommun(1L,"AZERTY",54610235,100));
     }
 
     @Test

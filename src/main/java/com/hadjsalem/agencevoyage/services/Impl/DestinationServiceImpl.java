@@ -31,7 +31,7 @@ public class DestinationServiceImpl implements DestinationService {
     @Override
     public DestinationDto findDestinationById(Long id) {
     Optional<Destination> optionalDestination =destinationRepository.findById(id);
-    return optionalDestination.map(mapper::fromdestination).orElseThrow(()->new NoSuchElementException("Destination Not Found"));
+    return optionalDestination.map(mapper::fromdestination).orElseThrow(()->new EntityNotFoundException("Destination Not Found"));
 
     }
 
@@ -39,7 +39,7 @@ public class DestinationServiceImpl implements DestinationService {
     public DestinationDto findDestinationByVille(String ville) {
         Optional<Destination> destination = destinationRepository.findDestinationByVille(ville);
         if (!destination.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("destination Not Found");
         }
         return mapper.fromdestination(destination.get());
     }
@@ -54,7 +54,7 @@ public class DestinationServiceImpl implements DestinationService {
         destinationValidators.validate(destination);
       boolean exists = destinationRepository.existsByVille(destinationDto.getVille());
       if(exists){
-          throw  new DuplicateEntryException(" un destination est existe avec ce nom");
+          throw  new DuplicateEntryException("un destination est existe avec ce nom");
       }
       Destination savedDestination = destinationRepository.save(destination);
       return mapper.fromdestination(savedDestination);

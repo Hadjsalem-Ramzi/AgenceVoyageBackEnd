@@ -31,7 +31,7 @@ public class FactureServiceImpl implements FactureService {
     @Override
     public FactureDto findFactureById(Long id) {
     Optional<Facture> optionalFacture =factureRepository.findById(id);
-    return optionalFacture.map(mapper::fromFacture).orElseThrow(()->new NoSuchElementException("Facture Not Found"));
+    return optionalFacture.map(mapper::fromFacture).orElseThrow(()->new EntityNotFoundException("Facture Not Found"));
 
     }
 
@@ -39,7 +39,7 @@ public class FactureServiceImpl implements FactureService {
     public FactureDto findFactureByDesignation(String designation) {
         Optional<Facture> facture = factureRepository.findFactureByDesignation(designation);
         if (!facture.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("Facture Not Found");
         }
         return mapper.fromFacture(facture.get());
     }

@@ -41,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto findReservationByDateReservation(LocalDate date) {
         Optional<Reservation> reservation= reservationRepository.findReservationByDateReservation(date);
         if (!reservation.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new RuntimeException("Reservation Not Found");
         }
         return mapper.fromReservation(reservation.get());
     }

@@ -19,7 +19,7 @@ class SocieteLocationRepositoryTest {
 
    @BeforeEach
     public void SetUp(){
-        societeLocationRepository.save(new SocieteLocation(1,"ABC",58741369));
+        societeLocationRepository.save(new SocieteLocation(1L,"ABC",58741369));
    }
 
    @Test

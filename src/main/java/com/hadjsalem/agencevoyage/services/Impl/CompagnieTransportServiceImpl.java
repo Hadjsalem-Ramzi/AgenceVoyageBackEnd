@@ -33,7 +33,7 @@ public class CompagnieTransportServiceImpl implements CompagnieTransportService 
     @Override
     public CompagnieTransportDto findCompagnieTransportById(Long id) {
         Optional<CompagnieTransport> optionalCompagnieTransport = compagnieTransportRepository.findById(id);
-        return optionalCompagnieTransport.map(mapper::fromCompagnieTransport).orElseThrow(() -> new NoSuchElementException("CompagnieTransport Not Found"));
+        return optionalCompagnieTransport.map(mapper::fromCompagnieTransport).orElseThrow(() -> new EntityNotFoundException("CompagnieTransport Not Found"));
 
     }
 
@@ -41,7 +41,7 @@ public class CompagnieTransportServiceImpl implements CompagnieTransportService 
     public CompagnieTransportDto findCompagnieTransportByNom(String nom) {
         Optional<CompagnieTransport> compagnieTransport = compagnieTransportRepository.findCompagnieTransportByNom(nom);
         if (!compagnieTransport.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("Client Not Found");
         }
         return mapper.fromCompagnieTransport(compagnieTransport.get());
     }

@@ -32,7 +32,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public HotelDto findHotelById(Long id) {
     Optional<Hotel> optionalHotel = hotelRepository.findById(id);
-    return optionalHotel.map(mapper::fromHotel).orElseThrow(()->new NoSuchElementException("Hotel Not Found"));
+    return optionalHotel.map(mapper::fromHotel).orElseThrow(()->new EntityNotFoundException("Hotel Not Found"));
 
     }
 
@@ -40,7 +40,7 @@ public class HotelServiceImpl implements HotelService {
     public HotelDto findHotelByLibelle(String email) {
         Optional<Hotel> hotel= hotelRepository.findHotelByLibelle(email);
         if (!hotel.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("Hotel Not Found");
         }
         return mapper.fromHotel(hotel.get());
     }
@@ -56,7 +56,7 @@ public class HotelServiceImpl implements HotelService {
          throw new DuplicateEntryException("A Hotel was found with this Libelle");
      }
      Hotel savedHotel = hotelRepository.save(hotel);
-     return mapper.fromHotel(hotel);
+     return mapper.fromHotel(savedHotel);
     }
 
     @Override

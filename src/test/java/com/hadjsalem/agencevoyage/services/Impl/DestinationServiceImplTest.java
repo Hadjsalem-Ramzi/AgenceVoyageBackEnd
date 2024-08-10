@@ -1,4 +1,3 @@
-/*
 package com.hadjsalem.agencevoyage.services.Impl;
 
 import com.hadjsalem.agencevoyage.Common.PageResponse;
@@ -72,14 +71,14 @@ class DestinationServiceImplTest {
                 .ville("Paris").pays("France").build();
 
         when(destinationMapper.fromdestinationDto(destinationDto)).thenReturn(destination);
-        when(destinationRepository.existsByPays(destinationDto.getPays())).thenReturn(true);
+        when(destinationRepository.existsByVille(destinationDto.getVille())).thenReturn(true);
         Mockito.doNothing().when(destinationValidators).validate(Mockito.any(Destination.class));
 
         assertThatThrownBy(() -> underTest.saveDestination(destinationDto))
                 .isInstanceOf(DuplicateEntryException.class)
-                .hasMessage("un Destination est existe avec cette email");
+                .hasMessage("un destination est existe avec ce nom");
 
-        verify(destinationRepository, times(1)).existsByPays(destinationDto.getPays());
+        verify(destinationRepository, times(1)).existsByVille(destinationDto.getVille());
         verify(destinationRepository, never()).save(any(Destination.class));
     }
     @Test
@@ -114,8 +113,7 @@ class DestinationServiceImplTest {
         assertEquals(true, result.isFirst());
         assertEquals(true, result.isLast());
     }
-    */
-/*****         Test GetById Method                **//*
+/****         Test GetById Method                */
 
 
     @Test
@@ -139,8 +137,7 @@ class DestinationServiceImplTest {
 
     }
 
-    */
-/**                Test Method FindDestinationByNumTel                    ***********//*
+/*                Test Method FindDestinationByNumTel                    **********/
 
 
     @Test
@@ -159,7 +156,7 @@ class DestinationServiceImplTest {
     }
 
     @Test
-    void ShouldNotfindDestinationByEmail() {
+    void ShouldNotfindDestinationByVille() {
         String  givenVille= "Paris";
 
         when(destinationRepository.findDestinationByVille(givenVille)).thenReturn(Optional.empty());
@@ -168,8 +165,7 @@ class DestinationServiceImplTest {
     }
 
 
-    */
-/**    Test  Method updateDestination *****//*
+/*    Test  Method updateDestination ****/
 
 
 
@@ -255,19 +251,18 @@ class DestinationServiceImplTest {
         when(destinationRepository.findById(givenDestinationId)).thenReturn(Optional.of(destination));
 
         // Simuler l'exception de validation
-        doThrow(new ObjectNotValidException(Set.of("Le prénom ne peut pas être vide")))
+        doThrow(new ObjectNotValidException(Set.of("cette champ  ne peut pas être vide")))
                 .when(destinationValidators).validate(any(Destination.class));
 
         // Assertion pour vérifier l'exception
         assertThatThrownBy(() -> underTest.updateDestination(invalidDestinationDto, givenDestinationId))
                 .isInstanceOf(ObjectNotValidException.class)
-                .hasMessageContaining("Le prénom ne peut pas être vide");
+                .hasMessageContaining("cette champ  ne peut pas être vide");
     }
 
 
 
-    */
-/***             Test Méthod Delete       *********//*
+/**             Test Méthod Delete       ********/
 
 
 
@@ -299,4 +294,3 @@ class DestinationServiceImplTest {
     
     
 
-*/

@@ -32,7 +32,7 @@ public class ItineraireServiceImpl implements ItineraireService {
     @Override
     public ItineraireDto findItineraireById(Long id) {
     Optional<Itineraire> optionalItineraire =itineraireRepository.findById(id);
-    return optionalItineraire.map(mapper::fromItineraire).orElseThrow(()->new NoSuchElementException("Itineraire Not Found"));
+    return optionalItineraire.map(mapper::fromItineraire).orElseThrow(()->new EntityNotFoundException("Itineraire Not Found"));
 
     }
 
@@ -40,7 +40,7 @@ public class ItineraireServiceImpl implements ItineraireService {
     public ItineraireDto findItineraireByLibelle(String email) {
         Optional<Itineraire> itineraire= itineraireRepository.findItineraireByLibelle(email);
         if (!itineraire.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("Itineraire Not Found");
         }
         return mapper.fromItineraire(itineraire.get());
     }
@@ -57,7 +57,7 @@ public class ItineraireServiceImpl implements ItineraireService {
          throw  new DuplicateEntryException("Itineraire was Found with this Libelle");
      }
      Itineraire saveditineraire = itineraireRepository.save(itineraire);
-     return mapper.fromItineraire(itineraire);
+     return mapper.fromItineraire(saveditineraire);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ItineraireServiceImpl implements ItineraireService {
         if(itineraireRepository.findById(id).isPresent()){
             itineraireRepository.deleteById(id);
         } else {
-            throw  new EntityNotFoundException("Iteneraire with thi sid Not Found");
+            throw  new EntityNotFoundException("Itineraire with this id Not Found");
         }
 
     }

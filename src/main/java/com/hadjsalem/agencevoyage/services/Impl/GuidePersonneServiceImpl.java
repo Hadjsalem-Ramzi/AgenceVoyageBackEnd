@@ -32,7 +32,7 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
     @Override
     public GuidePersonneDto findGuidePersonneById(Long id) {
     Optional<GuidePersonne> optionalGuidePersonne =guidePersonneRepository.findById(id);
-    return optionalGuidePersonne.map(mapper::fromGuidePersonne).orElseThrow(()->new NoSuchElementException("GuidePersonne Not Found"));
+    return optionalGuidePersonne.map(mapper::fromGuidePersonne).orElseThrow(()->new EntityNotFoundException("GuidePersonne Not Found"));
 
     }
 
@@ -40,7 +40,7 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
     public GuidePersonneDto findGuidePersonneByNumTel(Integer NumTel) {
         Optional<GuidePersonne> guidePersonne = guidePersonneRepository.findPersonneByNumTelephone(NumTel);
         if (!guidePersonne.isPresent()) {
-            throw new RuntimeException("Client Not Found");
+            throw new EntityNotFoundException("GuidePersonne Not Found");
         }
         return mapper.fromGuidePersonne(guidePersonne.get());
     }
@@ -57,7 +57,7 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
              throw  new DuplicateEntryException("Un Guide Personne est existe avec cette Num télephone");
          }
          GuidePersonne savedGuidePersonne = guidePersonneRepository.save(guidePersonne);
-         return mapper.fromGuidePersonne(guidePersonne);
+         return mapper.fromGuidePersonne(savedGuidePersonne);
     }
 
     @Override

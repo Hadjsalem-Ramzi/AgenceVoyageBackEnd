@@ -3,6 +3,7 @@ package com.hadjsalem.agencevoyage.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Inheritance(strategy =InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="Type_Transport")
 public class CompagnieTransport {

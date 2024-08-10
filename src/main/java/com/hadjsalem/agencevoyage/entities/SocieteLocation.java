@@ -2,13 +2,14 @@ package com.hadjsalem.agencevoyage.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-
+@SuperBuilder
 @NoArgsConstructor
 @DiscriminatorValue("SL")
 public class SocieteLocation extends CompagnieTransport {
@@ -16,10 +17,11 @@ public class SocieteLocation extends CompagnieTransport {
     @OneToMany(mappedBy = "societeLocation")
     List<Vehicule> vehicules;
 
-    public SocieteLocation(Long id1, String nom1, Integer numTel1) {
+
+    public SocieteLocation(Long id, String nom, Integer numTel) {
         super();
-        this.setId(id1);
-        this.setNom(nom1);
-        this.setNumTel(numTel1);
+        this.setId(id);
+        this.setNom(nom);
+        this.setNumTel(numTel);
     }
 }
