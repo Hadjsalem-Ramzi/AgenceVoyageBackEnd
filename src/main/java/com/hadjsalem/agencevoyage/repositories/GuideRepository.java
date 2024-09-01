@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface GuideRepository extends JpaRepository<Guide,Long> {
-    Optional<Guide> findGuideByNumTel(Integer numTel);
+    Optional<Guide> findGuideByName(String name);
 
-    boolean existsByNumTel(Integer numTel);
+    boolean existsByName(String name);
 
     Page<Guide> findAll(Pageable pageable);
 }

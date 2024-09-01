@@ -20,8 +20,8 @@ class MoyenTransportMapperTest {
 
     @Test
     public void ShouldMapMoyenTransportToMoyenTransportDto(){
-        MoyenTransport givenMoyenTransport = MoyenTransport.builder().nom("Bus Touristique").Type("Terrestre").capacite(100L).build();
-        MoyenTransportDto expected = MoyenTransportDto.builder().nom("Bus Touristique").Type("Terrestre").capacite(100L).build();
+        MoyenTransport givenMoyenTransport = MoyenTransport.builder().name("Bus Touristique").Type("Terrestre").capacite(100L).build();
+        MoyenTransportDto expected = MoyenTransportDto.builder().name("Bus Touristique").Type("Terrestre").capacite(100L).build();
 
         MoyenTransportDto result= underTest.fromMoyenTransport(givenMoyenTransport);
 
@@ -31,8 +31,8 @@ class MoyenTransportMapperTest {
 
     @Test
     public void ShouldMapMoyenTransportDtoToMoyenTransport(){
-        MoyenTransport givenMoyenTransport = MoyenTransport.builder().nom("Bus Touristique").Type("Terrestre").capacite(100L).build();
-        MoyenTransportDto expected = MoyenTransportDto.builder().nom("Bus Touristique").Type("Terrestre").capacite(100L).build();
+        MoyenTransport givenMoyenTransport = MoyenTransport.builder().name("Bus Touristique").Type("Terrestre").capacite(100L).build();
+        MoyenTransportDto expected = MoyenTransportDto.builder().name("Bus Touristique").Type("Terrestre").capacite(100L).build();
 
         MoyenTransportDto result= underTest.fromMoyenTransport(givenMoyenTransport);
 

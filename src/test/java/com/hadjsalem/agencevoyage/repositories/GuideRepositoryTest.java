@@ -19,23 +19,23 @@ class GuideRepositoryTest {
 
     @BeforeEach
     public void SetUp(){
-        guideRepository.save(Guide.builder().firstName("Ahmed").numTel(54601233).specialite("GuideTerrain").build());
-        guideRepository.save(Guide.builder().firstName("Ali").numTel(54687933).specialite("GuideEnLigne").build());
+        guideRepository.save(Guide.builder().name("Ramzi").build());
+        guideRepository.save(Guide.builder().name("Ramzi").build());
     }
 
     @Test
   public void SouldFindGuideByNumTel(){
-        Integer numTel=54601233;
+        String name = "Ramzi";
 
-        Optional<Guide> result= guideRepository.findGuideByNumTel(numTel);
+        Optional<Guide> result= guideRepository.findGuideByName(name);
         AssertionsForClassTypes.assertThat(result).isPresent();
     }
 
     @Test
     public void SouldNotFindGuideByNumTel(){
-        Integer numTel=54601456;
+        String name = "Ramzi";
 
-        Optional<Guide> result= guideRepository.findGuideByNumTel(numTel);
+        Optional<Guide> result= guideRepository.findGuideByName(name);
         AssertionsForClassTypes.assertThat(result).isEmpty();
     }
 

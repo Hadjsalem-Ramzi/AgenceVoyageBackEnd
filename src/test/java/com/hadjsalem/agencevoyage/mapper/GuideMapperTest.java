@@ -18,8 +18,8 @@ class GuideMapperTest {
     @Test
     public  void ShouldMapGuideToGuideDto(){
 
-        Guide givenGuide = Guide.builder().firstName("Ramzi").lastName("Hadjsalem").specialite("Guide Terrestre").numTel(54604022).build();
-        GuideDto expected = GuideDto.builder().firstName("Ramzi").lastName("Hadjsalem").specialite("Guide Terrestre").numTel(54604022).build();
+        Guide givenGuide = Guide.builder().name("Ramzi").build();
+        GuideDto expected = GuideDto.builder().name("Ramzi").build();
 
         GuideDto result = underTest.fromGuide(givenGuide);
 
@@ -31,8 +31,8 @@ class GuideMapperTest {
     @Test
     public  void ShouldMapGuideDtoToGuide(){
 
-        GuideDto givenGuide = GuideDto.builder().firstName("Ramzi").lastName("Hadjsalem").specialite("Guide Terrestre").numTel(54604022).build();
-        Guide expected = Guide.builder().firstName("Ramzi").lastName("Hadjsalem").specialite("Guide Terrestre").numTel(54604022).build();
+        GuideDto givenGuide = GuideDto.builder().name("Ramzi").build();
+        Guide expected = Guide.builder().name("Ramzi").build();
 
         Guide result = underTest.fromGuideDto(givenGuide);
 

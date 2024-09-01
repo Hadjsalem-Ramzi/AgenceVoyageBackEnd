@@ -18,23 +18,23 @@ class MoyenTransportRepositoryTest {
 
     @BeforeEach
     public void SetUp(){
-        moyenTransportRepository.save(MoyenTransport.builder().nom("Autobus-10").Type("Terrestre").capacite(100L).build());
+        moyenTransportRepository.save(MoyenTransport.builder().name("Hannibaal").Type("Terrseetre").capacite(500L).build());
     }
 
     @Test
     public  void ShouldFindMoyenTransportBy(){
-        String nom="Autobus-10";
+        String name="Autobus-10";
 
-        Optional<MoyenTransport> result = moyenTransportRepository.findMoyenTransportByNom(nom);
+        Optional<MoyenTransport> result = moyenTransportRepository.findMoyenTransportByName(name);
 
         AssertionsForClassTypes.assertThat(result).isPresent();
     }
 
     @Test
     public  void ShouldNotFindMoyenTransportBy(){
-        String nom="ncvbcbc";
+        String name="Autobus-10";
 
-        Optional<MoyenTransport> result = moyenTransportRepository.findMoyenTransportByNom(nom);
+        Optional<MoyenTransport> result = moyenTransportRepository.findMoyenTransportByName(name);
 
         AssertionsForClassTypes.assertThat(result).isEmpty();
     }

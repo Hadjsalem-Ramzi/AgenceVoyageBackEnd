@@ -6,7 +6,7 @@ import com.hadjsalem.agencevoyage.entities.CompagnieTransport;
 
 public interface CompagnieTransportService {
     CompagnieTransportDto findCompagnieTransportById(Long id);
-    CompagnieTransportDto findCompagnieTransportByNom(String nom);
+    CompagnieTransportDto findCompagnieTransportByName(String name);
     CompagnieTransportDto saveCompagnieTransport(CompagnieTransportDto compagnieTransport);
     CompagnieTransportDto updateCompagnieTransport(CompagnieTransportDto compagnieTransport,Long id);
     void deleteCompagnieTransport(Long id);

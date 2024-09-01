@@ -19,15 +19,15 @@ class GuidePersonneRepositoryTest {
 
     @BeforeEach
     public void SetUp(){
-        guidePersonneRepository.save(GuidePersonne.builder().firstName("Monji").lastName("hajsalem").numTel(65213489).build());
-        guidePersonneRepository.save(GuidePersonne.builder().firstName("Karim").lastName("Ben Mostfa").numTel(65583489).build());
+        guidePersonneRepository.save(GuidePersonne.builder().name("Ramzi").build());
+        guidePersonneRepository.save(GuidePersonne.builder().name("Ramzi").build());
     }
 
     @Test
-    public void ShouldFindPersonneByNumTel(){
-        Integer NumTel=65213489;
+    public void ShouldFindPersonneByName(){
+        String name = "Ramzi";
 
-        Optional<GuidePersonne> result=guidePersonneRepository.findPersonneByNumTelephone(NumTel);
+        Optional<GuidePersonne> result=guidePersonneRepository.findGuidePersonneByName(name);
 
         AssertionsForClassTypes.assertThat(result).isPresent();
 
@@ -35,9 +35,9 @@ class GuidePersonneRepositoryTest {
 
     @Test
     public void ShouldNotFindPersonneByNumTel(){
-        Integer NumTel=65454444;
+        String name="Ramzi";
 
-        Optional<GuidePersonne> result=guidePersonneRepository.findPersonneByNumTelephone(NumTel);
+        Optional<GuidePersonne> result=guidePersonneRepository.findGuidePersonneByName(name);
 
         AssertionsForClassTypes.assertThat(result).isEmpty();
 

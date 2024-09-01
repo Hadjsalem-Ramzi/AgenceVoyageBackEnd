@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface GuidePapierRepository extends JpaRepository<GuidePapier,Long> {
-    Optional<GuidePapier> findGuidePapierByLibelle(String Libelle);
+    Optional<GuidePapier> findGuidePapierByName(String Libelle);
 
-    boolean existsByLibelle(String libelle);
+    boolean existsByName(String libelle);
 
     Page<GuidePapier> findAll(Pageable pageable);
 

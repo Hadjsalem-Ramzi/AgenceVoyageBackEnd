@@ -1,3 +1,4 @@
+
 package com.hadjsalem.agencevoyage.services.Impl;
 
 import com.hadjsalem.agencevoyage.Common.PageResponse;
@@ -35,21 +36,22 @@ class GuidePapierServiceImplTest {
 
     @Mock
     private GuidePapierRepository guidePapierRepository;
-    
+
     @Mock
     private GuidePapierMapper guidePapierMapper;
-    
+
     @InjectMocks
     private GuidePapierServiceImpl underTest;
-    
+
     @Mock
     private ObjectsValidators<GuidePapier> guidePapierValidators;
+
     @Test
-    void shouldSaveNewGuidePapier(){
-        GuidePapierDto guidePapierDto = GuidePapierDto.builder().libelle("guidePapier1").build();
-        GuidePapier guidePapier= GuidePapier.builder().libelle("guidePapier1").build();
-        GuidePapier savedGuidePapier= GuidePapier.builder().id(1L).libelle("guidePapier1").build();
-        GuidePapierDto expectedGuidePapier= GuidePapierDto.builder().id(1L).libelle("guidePapier1").build();
+    void shouldSaveNewGuidePapier() {
+        GuidePapierDto guidePapierDto = GuidePapierDto.builder().name("guidePapier1").build();
+        GuidePapier guidePapier = GuidePapier.builder().name("guidePapier1").build();
+        GuidePapier savedGuidePapier = GuidePapier.builder().id(1L).name("guidePapier1").build();
+        GuidePapierDto expectedGuidePapier = GuidePapierDto.builder().id(1L).name("guidePapier1").build();
 
         when(guidePapierMapper.fromGuidePapierDto(guidePapierDto)).thenReturn(guidePapier);
         when(guidePapierRepository.save(guidePapier)).thenReturn(savedGuidePapier);
@@ -62,22 +64,23 @@ class GuidePapierServiceImplTest {
     @Test
     void shouldThrowDuplicateEntryExceptionWhenGuidePapierExists() {
         GuidePapierDto guidePapierDto = GuidePapierDto.builder()
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
 
         GuidePapier guidePapier = GuidePapier.builder()
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
 
         when(guidePapierMapper.fromGuidePapierDto(guidePapierDto)).thenReturn(guidePapier);
-        when(guidePapierRepository.existsByLibelle(guidePapierDto.getLibelle())).thenReturn(true);
+        when(guidePapierRepository.existsByName(guidePapierDto.getName())).thenReturn(true);
         Mockito.doNothing().when(guidePapierValidators).validate(Mockito.any(GuidePapier.class));
 
         assertThatThrownBy(() -> underTest.saveGuidePapier(guidePapierDto))
                 .isInstanceOf(DuplicateEntryException.class)
-                .hasMessage("un Guide Papier est existe avec Cette Libelle");
+                .hasMessage("un Guide Papier est existe avec Cette name");
 
-        verify(guidePapierRepository, times(1)).existsByLibelle(guidePapierDto.getLibelle());
+        verify(guidePapierRepository, times(1)).existsByName(guidePapierDto.getName());
         verify(guidePapierRepository, never()).save(any(GuidePapier.class));
     }
+
     @Test
     void ShouldGetAllGuidePapiers() {
         GuidePapier GuidePapier1 = new GuidePapier();
@@ -110,14 +113,15 @@ class GuidePapierServiceImplTest {
         assertEquals(true, result.isFirst());
         assertEquals(true, result.isLast());
     }
+
     /****         Test GetById Method                */
 
 
     @Test
     void ShouldFindGuidePapierById() {
         Long givenGuidePapierId = 1L;
-        GuidePapier guidePapier = GuidePapier.builder().id(1L).libelle("guidePapier1").build();
-        GuidePapierDto expected = GuidePapierDto.builder().id(1L).libelle("guidePapier1").build();
+        GuidePapier guidePapier = GuidePapier.builder().id(1L).name("guidePapier1").build();
+        GuidePapierDto expected = GuidePapierDto.builder().id(1L).name("guidePapier1").build();
         when(guidePapierRepository.findById(givenGuidePapierId)).thenReturn(Optional.of(guidePapier));
         when(guidePapierMapper.fromGuidePapier(guidePapier)).thenReturn(expected);
         GuidePapierDto result = underTest.findGuidePapierById(givenGuidePapierId);
@@ -134,19 +138,20 @@ class GuidePapierServiceImplTest {
 
     }
 
-    /*******                Test Method FindGuidePapierByNumTel                    ********* */
+
+    /*******                Test Method FindGuidePapierByNumTel                  **/
 
 
     @Test
-    void ShouldfindGuidePapierByLibelle() {
-        String givenLibelle = "guidePapier1";
-        GuidePapier guidePapier = GuidePapier.builder().libelle("guidePapier1").build();
-        GuidePapierDto expected = GuidePapierDto.builder().libelle("guidePapier1").build();
+    void ShouldfindGuidePapierByname() {
+        String givenName = "guidePapier1";
+        GuidePapier guidePapier = GuidePapier.builder().name("guidePapier1").build();
+        GuidePapierDto expected = GuidePapierDto.builder().name("guidePapier1").build();
 
-        when(guidePapierRepository.findGuidePapierByLibelle(givenLibelle)).thenReturn(Optional.of(guidePapier));
+        when(guidePapierRepository.findGuidePapierByName(givenName)).thenReturn(Optional.of(guidePapier));
         when(guidePapierMapper.fromGuidePapier(guidePapier)).thenReturn(expected);
 
-        GuidePapierDto result = underTest.findGuidePapierByLibelle(givenLibelle);
+        GuidePapierDto result = underTest.findGuidePapierByName(givenName);
 
         assertThat(result).isNotNull();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
@@ -154,25 +159,24 @@ class GuidePapierServiceImplTest {
 
     @Test
     void ShouldNotfindGuidePapierByVille() {
-        String  givenLibelle= "guidePapier1";
+        String givenName = "guidePapier1";
 
-        when(guidePapierRepository.findGuidePapierByLibelle(givenLibelle)).thenReturn(Optional.empty());
+        when(guidePapierRepository.findGuidePapierByName(   givenName)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.findGuidePapierByLibelle(givenLibelle)).isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> underTest.findGuidePapierByName(givenName)).isInstanceOf(EntityNotFoundException.class);
     }
 
 
     /***********    Test  Method updateGuidePapier ****/
 
 
-
     @Test
     void ShouldUpdateGuidePapier() {
         Long givenGuidePapierId = 2L;
-        GuidePapier guidePapier = GuidePapier.builder().id(2L).libelle("guidePapier1").build();
-        GuidePapierDto guidePapierDto = GuidePapierDto.builder().id(2L).libelle("guidePapier1").build();
-        GuidePapier updatedGuidePapier = GuidePapier.builder().id(2L).libelle("guidePapier1").build();
-        GuidePapierDto expected = GuidePapierDto.builder().id(2L).libelle("guidePapier1").build();
+        GuidePapier guidePapier = GuidePapier.builder().id(2L).name("guidePapier1").build();
+        GuidePapierDto guidePapierDto = GuidePapierDto.builder().id(2L).name("guidePapier1").build();
+        GuidePapier updatedGuidePapier = GuidePapier.builder().id(2L).name("guidePapier1").build();
+        GuidePapierDto expected = GuidePapierDto.builder().id(2L).name("guidePapier1").build();
 
         when(guidePapierRepository.findById(givenGuidePapierId)).thenReturn(Optional.of(guidePapier));
         when(guidePapierRepository.saveAndFlush(guidePapier)).thenReturn(updatedGuidePapier);
@@ -189,10 +193,10 @@ class GuidePapierServiceImplTest {
     @Test
     void ShouldNotUpdateGuidePapier() {
         Long givenGuidePapierId = 2L;
-        GuidePapier guidePapier = GuidePapier.builder().id(2L).libelle("guidePapier1").build();
-        GuidePapierDto guidePapierDto = GuidePapierDto.builder().id(2L).libelle("guidePapier1").build();
-        GuidePapier updatedGuidePapier = GuidePapier.builder().id(2L).libelle("guidePapier1").build();
-        GuidePapierDto expected = GuidePapierDto.builder().id(2L).libelle("guidePapier1").build();
+        GuidePapier guidePapier = GuidePapier.builder().id(2L).name("guidePapier1").build();
+        GuidePapierDto guidePapierDto = GuidePapierDto.builder().id(2L).name("guidePapier1").build();
+        GuidePapier updatedGuidePapier = GuidePapier.builder().id(2L).name("guidePapier1").build();
+        GuidePapierDto expected = GuidePapierDto.builder().id(2L).name("guidePapier1").build();
 
         when(guidePapierRepository.findById(givenGuidePapierId)).thenReturn(Optional.of(guidePapier));
         when(guidePapierRepository.saveAndFlush(guidePapier)).thenReturn(updatedGuidePapier);
@@ -211,7 +215,7 @@ class GuidePapierServiceImplTest {
         Long givenGuidePapierId = 2L;
         GuidePapierDto guidePapierDto = GuidePapierDto.builder()
                 .id(2L)
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
 
         when(guidePapierRepository.findById(givenGuidePapierId)).thenReturn(Optional.empty());
 
@@ -223,10 +227,10 @@ class GuidePapierServiceImplTest {
         Long givenGuidePapierId = 2L;
         GuidePapier guidePapier = GuidePapier.builder()
                 .id(2L)
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
         GuidePapierDto guidePapierDto = GuidePapierDto.builder()
                 .id(2L)
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
 
         when(guidePapierRepository.findById(givenGuidePapierId)).thenReturn(Optional.of(guidePapier));
         when(guidePapierRepository.saveAndFlush(guidePapier)).thenThrow(new RuntimeException("Database error"));
@@ -240,10 +244,10 @@ class GuidePapierServiceImplTest {
         Long givenGuidePapierId = 2L;
         GuidePapier guidePapier = GuidePapier.builder()
                 .id(2L)
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
         GuidePapierDto invalidGuidePapierDto = GuidePapierDto.builder()
                 .id(2L)
-                .libelle("guidePapier1").build();
+                .name("guidePapier1").build();
 
         when(guidePapierRepository.findById(givenGuidePapierId)).thenReturn(Optional.of(guidePapier));
 
@@ -259,15 +263,17 @@ class GuidePapierServiceImplTest {
 
 
 
-    /**             Test Méthod Delete       ********/
+    
+/**             Test Méthod Delete       ********/
+
 
 
 
     @Test
     void shouldDeleteGuidePapierById() {
         Long GuidePapierId = 1L;
-        GuidePapier guidePapier = GuidePapier.builder().id(1L).libelle("guidePapier1").build();
-        GuidePapierDto guidePapierDto = GuidePapierDto.builder().id(1L).libelle("guidePapier1").build();
+        GuidePapier guidePapier = GuidePapier.builder().id(1L).name("guidePapier1").build();
+        GuidePapierDto guidePapierDto = GuidePapierDto.builder().id(1L).name("guidePapier1").build();
         when(guidePapierRepository.findById(guidePapierDto.getId())).thenReturn(Optional.of(guidePapier));
         underTest.deleteGuidePapier(GuidePapierId);
 
@@ -290,4 +296,5 @@ class GuidePapierServiceImplTest {
     
     
     
+
 

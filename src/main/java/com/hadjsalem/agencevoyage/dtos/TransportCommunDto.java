@@ -2,15 +2,12 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class TransportCommunDto {
-  private  Long id;
-  private   String nom;
-  private   Integer numTel;
-  private   Integer capacite;
+@SuperBuilder
+public class TransportCommunDto  extends CompagnieTransportDto{
+
 }

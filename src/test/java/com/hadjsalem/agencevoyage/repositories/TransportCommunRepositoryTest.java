@@ -19,14 +19,14 @@ class TransportCommunRepositoryTest {
 
     @BeforeEach
     public void SetUp(){
-        transportCommunRepository.save(new TransportCommun(1L,"AZERTY",54610235,100));
+        TransportCommun transportCommun = TransportCommun.builder().id(1L).name("AZERTY").numTel(54610235).build();
     }
 
     @Test
     public void SouldFindTransportCommunByNom(){
-        String nom ="AZERTY";
+        String name ="AZERTY";
 
-        Optional<TransportCommun> result = transportCommunRepository.findTransportCommunByNom(nom);
+        Optional<TransportCommun> result = transportCommunRepository.findTransportCommunByName(name);
 
       AssertionsForClassTypes.assertThat(result).isPresent();
 
@@ -34,9 +34,9 @@ class TransportCommunRepositoryTest {
 
     @Test
     public void SouldNotFindTransportCommunByNom(){
-        String nom ="Anhgfd";
+        String name ="Anhgfd";
 
-        Optional<TransportCommun> result = transportCommunRepository.findTransportCommunByNom(nom);
+        Optional<TransportCommun> result = transportCommunRepository.findTransportCommunByName(name);
 
         AssertionsForClassTypes.assertThat(result).isEmpty();
 

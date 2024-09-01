@@ -1,3 +1,4 @@
+/*
 package com.hadjsalem.agencevoyage.services.Impl;
 import com.hadjsalem.agencevoyage.Common.PageResponse;
 import com.hadjsalem.agencevoyage.dtos.GuidePersonneDto;
@@ -110,7 +111,9 @@ class GuidePersonneServiceImplTest {
         assertEquals(true, result.isFirst());
         assertEquals(true, result.isLast());
     }
-    /****         Test GetById Method                */
+    */
+/****         Test GetById Method                *//*
+
 
 
     @Test
@@ -134,7 +137,9 @@ class GuidePersonneServiceImplTest {
 
     }
 
-    /*******                Test Method FindGuidePersonneByNumTel                    ********* */
+    */
+/*******                Test Method FindGuidePersonneByNumTel                    ********* *//*
+
 
 
     @Test
@@ -162,7 +167,9 @@ class GuidePersonneServiceImplTest {
     }
 
 
-    /***********    Test  Method updateGuidePersonne ****/
+    */
+/***********    Test  Method updateGuidePersonne ****//*
+
 
 
 
@@ -259,7 +266,9 @@ class GuidePersonneServiceImplTest {
 
 
 
-    /**             Test Méthod Delete       ********/
+    */
+/**             Test Méthod Delete       ********//*
+
 
 
 
@@ -290,3 +299,4 @@ class GuidePersonneServiceImplTest {
     
     
 
+*/

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface TransportCommunRepository extends JpaRepository<TransportCommun,Long> {
-    Optional<TransportCommun> findTransportCommunByNom(String Nom);
+    Optional<TransportCommun> findTransportCommunByName(String name);
     boolean existsByNumTel(Integer numTel);
     Page<TransportCommun> findAll(Pageable pageable);
 }

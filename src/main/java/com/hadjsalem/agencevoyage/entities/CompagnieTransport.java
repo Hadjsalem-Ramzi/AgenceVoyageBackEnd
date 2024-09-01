@@ -15,14 +15,14 @@ import java.util.List;
 @SuperBuilder
 @Inheritance(strategy =InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="Type_Transport")
-public class CompagnieTransport {
+public class CompagnieTransport  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     @NotNull( message= "Cette Champ ne peut pas être null.")
     @NotEmpty(message = "Cette Champ ne peut pas être vide.")
     @NotBlank(message = "Cette Champ ne peut pas être composé uniquement d'espaces blancs.")
-    private String nom;
+    private String name;
 
     @NotNull(message = "Le numéro de téléphone ne peut pas être null.")
     @Positive(message = "Le numéro de téléphone doit être positif.")

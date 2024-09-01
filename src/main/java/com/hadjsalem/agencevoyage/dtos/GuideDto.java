@@ -2,17 +2,16 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class GuideDto {
 
     private Long id;
-    private String firstName;
-    private String lastName;
-    private Integer numTel;
-    private String specialite;
+    private String name;
+
 }

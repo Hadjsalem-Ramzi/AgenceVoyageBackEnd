@@ -38,13 +38,14 @@ public class CompagnieTransportServiceImpl implements CompagnieTransportService 
     }
 
     @Override
-    public CompagnieTransportDto findCompagnieTransportByNom(String nom) {
-        Optional<CompagnieTransport> compagnieTransport = compagnieTransportRepository.findCompagnieTransportByNom(nom);
+    public CompagnieTransportDto findCompagnieTransportByName(String name) {
+        Optional<CompagnieTransport> compagnieTransport = compagnieTransportRepository.findCompagnieTransportByName(name);
         if (!compagnieTransport.isPresent()) {
             throw new EntityNotFoundException("Client Not Found");
         }
         return mapper.fromCompagnieTransport(compagnieTransport.get());
     }
+
 
     @Override
     public CompagnieTransportDto saveCompagnieTransport(CompagnieTransportDto compagnieTransportDto) {

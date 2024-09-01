@@ -19,8 +19,8 @@ class CompagnieTransportMapperTest {
 
     @Test
     public void ShouldMapCompagnieTransportToCompagnieTransportDto(){
-        CompagnieTransport givenCompagnieTransport = CompagnieTransport.builder().nom("Carthage").numTel(54625897).build();
-        CompagnieTransportDto expected= CompagnieTransportDto.builder().nom("Carthage").numTel(54625897).build();
+        CompagnieTransport givenCompagnieTransport = CompagnieTransport.builder().name("Carthage").numTel(54625897).build();
+        CompagnieTransportDto expected= CompagnieTransportDto.builder().name("Carthage").numTel(54625897).build();
 
         CompagnieTransportDto result = underTest.fromCompagnieTransport(givenCompagnieTransport);
 
@@ -30,8 +30,8 @@ class CompagnieTransportMapperTest {
 
     @Test
     public void ShouldMapCompagnieTransportDtoToCompagnieTransport(){
-        CompagnieTransportDto givenCompagnieTransport = CompagnieTransportDto.builder().nom("Carthage").numTel(54625897).build();
-        CompagnieTransport expected= CompagnieTransport.builder().nom("Carthage").numTel(54625897).build();
+        CompagnieTransportDto givenCompagnieTransport = CompagnieTransportDto.builder().name("Carthage").numTel(54625897).build();
+        CompagnieTransport expected= CompagnieTransport.builder().name("Carthage").numTel(54625897).build();
 
         CompagnieTransport result = underTest.fromCompagnieTransportDto(givenCompagnieTransport);
 

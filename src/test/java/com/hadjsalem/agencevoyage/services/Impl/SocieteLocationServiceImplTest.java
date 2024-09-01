@@ -45,10 +45,10 @@ class SocieteLocationServiceImplTest {
 
     @Test
     void shouldSaveNewsocieteLocation(){
-        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().nom("LocationKia").numTel(98546213).build();
-        SocieteLocation societeLocation=  SocieteLocation.builder().nom("LocationKia").numTel(98546213).build();
-        SocieteLocation savedsocieteLocation=  societeLocation.builder().id(1L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto expectedsocieteLocation= SocieteLocationDto.builder().id(1L).nom("LocationKia").numTel(98546213).build();
+        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().name("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation=  SocieteLocation.builder().name("LocationKia").numTel(98546213).build();
+        SocieteLocation savedsocieteLocation=  societeLocation.builder().id(1L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto expectedsocieteLocation= SocieteLocationDto.builder().id(1L).name("LocationKia").numTel(98546213).build();
 
         when(societeLocationMapper.fromSocieteLocationDto(societeLocationDto)).thenReturn(societeLocation);
         when(societeLocationRepository.save(societeLocation)).thenReturn(savedsocieteLocation);
@@ -60,9 +60,9 @@ class SocieteLocationServiceImplTest {
 
     @Test
     void shouldThrowDuplicateEntryExceptionWhensocieteLocationExists() {
-        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().nom("LocationKia").numTel(98546213).build();
+        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().name("LocationKia").numTel(98546213).build();
 
-        SocieteLocation societeLocation = SocieteLocation.builder().nom("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation = SocieteLocation.builder().name("LocationKia").numTel(98546213).build();
 
         when(societeLocationMapper.fromSocieteLocationDto(societeLocationDto)).thenReturn(societeLocation);
         when(societeLocationRepository.existsByNumTel(societeLocationDto.getNumTel())).thenReturn(true);
@@ -113,8 +113,8 @@ class SocieteLocationServiceImplTest {
     @Test
     void ShouldFindsocieteLocationById() {
         Long givensocieteLocationId = 1L;
-        SocieteLocation societeLocation = SocieteLocation.builder().id(1L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto expected = SocieteLocationDto.builder().id(1L).nom("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation = SocieteLocation.builder().id(1L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto expected = SocieteLocationDto.builder().id(1L).name("LocationKia").numTel(98546213).build();
         when(societeLocationRepository.findById(givensocieteLocationId)).thenReturn(Optional.of(societeLocation));
         when(societeLocationMapper.fromSocieteLocation(societeLocation)).thenReturn(expected);
         SocieteLocationDto result = underTest.findSocieteLocationById(givensocieteLocationId);
@@ -137,13 +137,13 @@ class SocieteLocationServiceImplTest {
     @Test
     void ShouldfindsocieteLocationByNom() {
        String givenSocieteLocation = "LocationKia";
-        SocieteLocation societeLocation = SocieteLocation.builder().nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto expected = SocieteLocationDto.builder().nom("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation = SocieteLocation.builder().name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto expected = SocieteLocationDto.builder().name("LocationKia").numTel(98546213).build();
 
         when(societeLocationRepository.findSocieteLocationByNom(givenSocieteLocation)).thenReturn(Optional.of(societeLocation));
         when(societeLocationMapper.fromSocieteLocation(societeLocation)).thenReturn(expected);
 
-        SocieteLocationDto result = underTest.findSocieteLocationByNom(societeLocation.getNom());
+        SocieteLocationDto result = underTest.findSocieteLocationByName(societeLocation.getName());
 
         assertThat(result).isNotNull();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
@@ -154,7 +154,7 @@ class SocieteLocationServiceImplTest {
         String givenSocieteLocation = "LocationKia";
         when(societeLocationRepository.findSocieteLocationByNom(givenSocieteLocation)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.findSocieteLocationByNom(givenSocieteLocation)).isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> underTest.findSocieteLocationByName(givenSocieteLocation)).isInstanceOf(EntityNotFoundException.class);
     }
 
 
@@ -165,10 +165,10 @@ class SocieteLocationServiceImplTest {
     @Test
     void ShouldUpdatesocieteLocation() {
         Long givensocieteLocationId = 2L;
-        SocieteLocation societeLocation = SocieteLocation.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocation updatedsocieteLocation = societeLocation.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto expected = SocieteLocationDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation = SocieteLocation.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        SocieteLocation updatedsocieteLocation = societeLocation.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto expected = SocieteLocationDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
 
         when(societeLocationRepository.findById(givensocieteLocationId)).thenReturn(Optional.of(societeLocation));
         when(societeLocationRepository.saveAndFlush(societeLocation)).thenReturn(updatedsocieteLocation);
@@ -185,10 +185,10 @@ class SocieteLocationServiceImplTest {
     @Test
     void ShouldNotUpdatesocieteLocation() {
         Long givensocieteLocationId = 2L;
-        SocieteLocation societeLocation = SocieteLocation.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocation updatedsocieteLocation = societeLocation.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto expected = SocieteLocationDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation = SocieteLocation.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        SocieteLocation updatedsocieteLocation = societeLocation.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto expected = SocieteLocationDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
 
         when(societeLocationRepository.findById(givensocieteLocationId)).thenReturn(Optional.of(societeLocation));
         when(societeLocationRepository.saveAndFlush(societeLocation)).thenReturn(updatedsocieteLocation);
@@ -207,7 +207,7 @@ class SocieteLocationServiceImplTest {
         Long givensocieteLocationId = 2L;
         SocieteLocationDto societeLocationDto = SocieteLocationDto.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
 
         when(societeLocationRepository.findById(givensocieteLocationId)).thenReturn(Optional.empty());
 
@@ -219,10 +219,10 @@ class SocieteLocationServiceImplTest {
         Long givensocieteLocationId = 2L;
         SocieteLocation societeLocation = SocieteLocation.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
         SocieteLocationDto societeLocationDto = SocieteLocationDto.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
 
         when(societeLocationRepository.findById(givensocieteLocationId)).thenReturn(Optional.of(societeLocation));
         when(societeLocationRepository.saveAndFlush(societeLocation)).thenThrow(new RuntimeException("Database error"));
@@ -236,10 +236,10 @@ class SocieteLocationServiceImplTest {
         Long givensocieteLocationId = 2L;
         SocieteLocation societeLocation = SocieteLocation.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
         SocieteLocationDto invalidSocieteLocationDto = SocieteLocationDto.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
 
         when(societeLocationRepository.findById(givensocieteLocationId)).thenReturn(Optional.of(societeLocation));
 
@@ -262,8 +262,8 @@ class SocieteLocationServiceImplTest {
     @Test
     void shouldDeletesocieteLocationById() {
         Long societeLocationId = 1L;
-        SocieteLocation societeLocation = SocieteLocation.builder().id(1L).nom("LocationKia").numTel(98546213).build();
-        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().id(1L).nom("LocationKia").numTel(98546213).build();
+        SocieteLocation societeLocation = SocieteLocation.builder().id(1L).name("LocationKia").numTel(98546213).build();
+        SocieteLocationDto societeLocationDto = SocieteLocationDto.builder().id(1L).name("LocationKia").numTel(98546213).build();
         when(societeLocationRepository.findById(societeLocationDto.getId())).thenReturn(Optional.of(societeLocation));
         underTest.deleteSocieteLocation(societeLocationId);
 

@@ -2,15 +2,13 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class SocieteLocationDto {
-  private  Long id;
-   private String nom;
-   private Integer numTel;
+@SuperBuilder
+public class SocieteLocationDto  extends CompagnieTransportDto{
+
 
 }

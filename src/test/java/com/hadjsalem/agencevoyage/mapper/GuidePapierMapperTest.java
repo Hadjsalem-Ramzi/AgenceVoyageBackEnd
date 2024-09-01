@@ -1,7 +1,7 @@
+
 package com.hadjsalem.agencevoyage.mapper;
 import com.hadjsalem.agencevoyage.dtos.GuidePapierDto;
 import com.hadjsalem.agencevoyage.entities.GuidePapier;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,8 +18,8 @@ class GuidePapierMapperTest {
 
     @Test
     public  void ShouldMapGuidePapierToGuidePapierDto(){
-        GuidePapier givenGuidePapier = GuidePapier.builder().libelle("CartePapierFrance").build();
-        GuidePapierDto expected = GuidePapierDto.builder().libelle("CartePapierFrance").build();
+        GuidePapier givenGuidePapier = GuidePapier.builder().name("CartePapierFrance").build();
+        GuidePapierDto expected = GuidePapierDto.builder().name("CartePapierFrance").build();
 
         GuidePapierDto result = underTest.fromGuidePapier(givenGuidePapier);
 
@@ -30,8 +30,8 @@ class GuidePapierMapperTest {
 
     @Test
     public  void ShouldMapGuidePapierDtoToGuidePapier(){
-        GuidePapierDto givenGuidePapier = GuidePapierDto.builder().libelle("CartePapierFrance").build();
-        GuidePapier expected = GuidePapier.builder().libelle("CartePapierFrance").build();
+        GuidePapierDto givenGuidePapier = GuidePapierDto.builder().name("CartePapierFrance").build();
+        GuidePapier expected = GuidePapier.builder().name("CartePapierFrance").build();
 
         GuidePapier result = underTest.fromGuidePapierDto(givenGuidePapier);
 
@@ -57,3 +57,4 @@ class GuidePapierMapperTest {
     }
 
 }
+

@@ -10,7 +10,7 @@ import lombok.*;
 public class MoyenTransportDto {
 
 private Long id;
-private   String nom;
+private   String name;
 private   String Type;
 private Long capacite;
 }

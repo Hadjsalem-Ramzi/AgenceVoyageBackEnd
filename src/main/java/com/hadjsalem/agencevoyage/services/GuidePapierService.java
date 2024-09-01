@@ -5,7 +5,7 @@ import com.hadjsalem.agencevoyage.entities.GuidePapier;
 
 public interface GuidePapierService {
     GuidePapierDto findGuidePapierById(Long id);
-    GuidePapierDto findGuidePapierByLibelle(String libelle);
+    GuidePapierDto findGuidePapierByName(String libelle);
     GuidePapierDto saveGuidePapier(GuidePapierDto guidePapier);
     GuidePapierDto updateGuidePapier(GuidePapierDto guidePapier,Long id);
     void deleteGuidePapier(Long id);

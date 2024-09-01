@@ -18,10 +18,5 @@ public class SocieteLocation extends CompagnieTransport {
     List<Vehicule> vehicules;
 
 
-    public SocieteLocation(Long id, String nom, Integer numTel) {
-        super();
-        this.setId(id);
-        this.setNom(nom);
-        this.setNumTel(numTel);
-    }
+
 }

@@ -18,25 +18,25 @@ class GuidePapierRepositoryTest {
  
     @BeforeEach
     public void setUp(){
-        guidePapierRepository.save(GuidePapier.builder().libelle("Guide1").build());
-        guidePapierRepository.save(GuidePapier.builder().libelle("Guide2").build());
-        guidePapierRepository.save(GuidePapier.builder().libelle("Guide3").build());
+        guidePapierRepository.save(GuidePapier.builder().name("Guide1").build());
+        guidePapierRepository.save(GuidePapier.builder().name("Guide2").build());
+        guidePapierRepository.save(GuidePapier.builder().name( "Guide3").build());
     }
 
     @Test
     public void SouldFindGuidPapierByLibelle(){
-        String libelle="Guide1";
+        String name="Guide1";
 
-        Optional<GuidePapier> result = guidePapierRepository.findGuidePapierByLibelle(libelle);
+        Optional<GuidePapier> result = guidePapierRepository.findGuidePapierByName(name);
         AssertionsForClassTypes.assertThat(result).isPresent();
 
     }
 
     @Test
     public void SouldNotFindGuidPapierByLibelle(){
-        String libelle="Guide4";
+        String name="Guide4";
 
-        Optional<GuidePapier> result = guidePapierRepository.findGuidePapierByLibelle(libelle);
+        Optional<GuidePapier> result = guidePapierRepository.findGuidePapierByName(name);
         AssertionsForClassTypes.assertThat(result).isEmpty();
 
     }

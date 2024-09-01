@@ -22,8 +22,8 @@ class SocieteLocationMapperTest {
     @Test
     public void ShouldMapSocieteLocationToSocieteLocationDto(){
 
-        SocieteLocation givenSocieteLocation = new SocieteLocation(1L,"Hannibaal",785623548);
-        SocieteLocationDto  expected = new SocieteLocationDto(1L,"Hannibaal",785623548);
+        SocieteLocation givenSocieteLocation = SocieteLocation.builder().id(1L).name("Ramzi").numTel(78562354).build();
+        SocieteLocationDto  expected = SocieteLocationDto.builder().id(1L).name("Ramzi").numTel(78562354).build();
 
         SocieteLocationDto result = underTest.fromSocieteLocation(givenSocieteLocation);
 
@@ -35,10 +35,12 @@ class SocieteLocationMapperTest {
     @Test
     public void ShouldMapSocieteLocationDtoToSocieteLocation(){
 
-        SocieteLocationDto givenSocieteLocation = new SocieteLocationDto(1L,"Hannibaal",785623548);
-        SocieteLocation  expected = new SocieteLocation(1L,"Hannibaal",785623548);
+        SocieteLocationDto  givenLocationDto = SocieteLocationDto.builder().id(1L).name("Ramzi").numTel(78562354).build();
 
-        SocieteLocation result = underTest.fromSocieteLocationDto(givenSocieteLocation);
+
+        SocieteLocation expected = SocieteLocation.builder().id(1L).name("Ramzi").numTel(78562354).build();
+
+        SocieteLocation result = underTest.fromSocieteLocationDto(givenLocationDto);
 
         assertThat(result).isNotNull();
         assertThat(expected).usingRecursiveComparison().isEqualTo(result);

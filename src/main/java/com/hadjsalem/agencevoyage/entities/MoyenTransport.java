@@ -22,7 +22,7 @@ public class MoyenTransport {
     @NotNull( message= "Cette Champ ne peut pas être null.")
     @NotEmpty(message = "Cette Champ ne peut pas être vide.")
     @NotBlank(message = "Cette Champ ne peut pas être composé uniquement d'espaces blancs.")
-    private String nom;
+    private String name;
 
     @NotNull( message= "Cette Champ ne peut pas être null.")
     @NotEmpty(message = "Cette Champ ne peut pas être vide.")

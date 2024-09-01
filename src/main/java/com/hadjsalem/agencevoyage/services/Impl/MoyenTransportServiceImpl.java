@@ -36,8 +36,8 @@ public class MoyenTransportServiceImpl implements MoyenTransportService {
     }
 
     @Override
-    public MoyenTransportDto findMoyenTransportByNom(String email) {
-        Optional<MoyenTransport> moyenTransport = moyenTransportRepository.findMoyenTransportByNom(email);
+    public MoyenTransportDto findMoyenTransportByName(String name) {
+        Optional<MoyenTransport> moyenTransport = moyenTransportRepository.findMoyenTransportByName(name);
         if (!moyenTransport.isPresent()) {
             throw new EntityNotFoundException("MoyenTransport Not Found");
         }
@@ -51,7 +51,7 @@ public class MoyenTransportServiceImpl implements MoyenTransportService {
             throw new IllegalArgumentException("Moyen Transport was null");
         }
         moyenTransportValidators.validate(moyenTransport);
-        boolean exists = moyenTransportRepository.existsByNom(moyenTransportDto.getNom());
+        boolean exists = moyenTransportRepository.existsByName(moyenTransportDto.getName());
         if (exists) {
             throw new DuplicateEntryException("moyen Transport with this Nom was Found");
         }
@@ -66,7 +66,7 @@ public class MoyenTransportServiceImpl implements MoyenTransportService {
             MoyenTransport moyenTransport2 = moyenTransport1.get();
             moyenTransport2.setId(id);
             moyenTransportValidators.validate(moyenTransport2);
-            if (moyenTransportRepository.existsByNom(moyenTransport2.getNom())) {
+            if (moyenTransportRepository.existsByName(moyenTransport2.getName())) {
                 throw new DuplicateEntryException("A moyen Transport was Found with this Nom");
             }
             MoyenTransport moyenTransport3= moyenTransportRepository.saveAndFlush(moyenTransport2);

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MoyenTransportRepository extends JpaRepository<MoyenTransport,Long> {
-    Optional<MoyenTransport> findMoyenTransportByNom(String Nom);
-    boolean existsByNom(String nom);
+    Optional<MoyenTransport> findMoyenTransportByName(String name);
+    boolean existsByName(String name);
     Page<MoyenTransport> findAll(Pageable pageable);
 }

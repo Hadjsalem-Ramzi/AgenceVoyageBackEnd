@@ -39,8 +39,8 @@ public class SocieteLocationServiceImpl implements SocieteLocationService {
     }
 
     @Override
-    public SocieteLocationDto findSocieteLocationByNom(String nom) {
-        Optional<SocieteLocation> SocieteLocation= societeLocationRepository.findSocieteLocationByNom(nom);
+    public SocieteLocationDto findSocieteLocationByName(String name) {
+        Optional<SocieteLocation> SocieteLocation= societeLocationRepository.findSocieteLocationByNom(name);
         if (!SocieteLocation.isPresent()) {
             throw new RuntimeException("Client Not Found");
         }

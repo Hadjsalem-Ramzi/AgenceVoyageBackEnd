@@ -36,9 +36,9 @@ public class GuidePapierServiceImpl implements GuidePapierService {
     }
 
     @Override
-    public GuidePapierDto findGuidePapierByLibelle(String libelle) {
+    public GuidePapierDto findGuidePapierByName(String name) {
 
-        Optional<GuidePapier> guidePapier = guidePapierRepository.findGuidePapierByLibelle(libelle);
+        Optional<GuidePapier> guidePapier = guidePapierRepository.findGuidePapierByName(name);
         if (!guidePapier.isPresent()) {
             throw new RuntimeException("GuidePapier Not Found");
         }
@@ -52,7 +52,7 @@ public class GuidePapierServiceImpl implements GuidePapierService {
            throw new IllegalArgumentException("guide Papier Not Found");
        }
        guidePapierValidators.validate(guidePapier);
-       boolean exists = guidePapierRepository.existsByLibelle(guidePapierDto.getLibelle());
+       boolean exists = guidePapierRepository.existsByName(guidePapierDto.getName());
        if(exists){
            throw new DuplicateEntryException("un Guide Papier est existe avec Cette Libelle");
        }
@@ -67,7 +67,7 @@ public class GuidePapierServiceImpl implements GuidePapierService {
           GuidePapier guidePapier2 = guidePapier1.get();
           guidePapier2.setId(id);
           guidePapierValidators.validate(guidePapier2);
-          if (guidePapierRepository.existsByLibelle(guidePapier2.getLibelle())) {
+          if (guidePapierRepository.existsByName(guidePapier2.getName())) {
               throw new DuplicateEntryException("Un guide Papier was found with this Libelle");
           }
           GuidePapier guidePapier3 = guidePapierRepository.saveAndFlush(guidePapier2);

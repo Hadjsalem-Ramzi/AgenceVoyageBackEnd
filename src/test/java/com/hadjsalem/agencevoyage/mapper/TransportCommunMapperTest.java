@@ -1,13 +1,10 @@
 package com.hadjsalem.agencevoyage.mapper;
-
 import com.hadjsalem.agencevoyage.dtos.TransportCommunDto;
 import com.hadjsalem.agencevoyage.entities.TransportCommun;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 @SpringBootTest
@@ -19,8 +16,9 @@ class TransportCommunMapperTest {
 
     @Test
     public void ShouldMapTransportCommunToTransportCommunDto(){
-        TransportCommun givenTransportCommun = new TransportCommun(1L,"Autobus",87654321,200);
-        TransportCommunDto expected = new TransportCommunDto(1L,"Autobus",87654321,200);
+        TransportCommun givenTransportCommun =TransportCommun.builder().id(1L).name("Autobus").numTel(54604022).build();
+
+        TransportCommunDto expected =TransportCommunDto.builder().id(1L).name("Autobus").numTel(54604022).build();
 
         TransportCommunDto result = underTest.fromTransportCommun(givenTransportCommun);
 
@@ -31,10 +29,10 @@ class TransportCommunMapperTest {
 
     @Test
     public void ShouldMapTransportCommunDtoToTransportCommun(){
-        TransportCommunDto givenTransportCommun = new TransportCommunDto(1L,"Autobus",87654321,200);
-        TransportCommun expected = new TransportCommun(1L,"Autobus",87654321,200);
+        TransportCommunDto givenTransportCommunDto =TransportCommunDto.builder().id(1L).name("Autobus").numTel(54604022).build();
+        TransportCommun expected =TransportCommun.builder().id(1L).name("Autobus").numTel(54604022).build();
 
-        TransportCommun result = underTest.fromTransportCommunDto(givenTransportCommun);
+        TransportCommun result = underTest.fromTransportCommunDto(givenTransportCommunDto);
 
         assertThat(result).isNotNull();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
@@ -56,3 +54,4 @@ class TransportCommunMapperTest {
     }
 
 }
+

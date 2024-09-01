@@ -47,10 +47,10 @@ class GuideServiceImplTest {
 
     @Test
     void shouldSaveNewguide(){
-        GuideDto guideDto = GuideDto.builder().firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        Guide guide= Guide.builder().firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        Guide savedguide= guide.builder().id(1L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto expectedguide= guideDto.builder().id(1L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        GuideDto guideDto = GuideDto.builder().name("Ramzi").build();
+        Guide guide= Guide.builder().name("Ramzi").build();
+        Guide savedguide= guide.builder().id(1L).name("Ramzi").build();
+        GuideDto expectedguide= guideDto.builder().id(1L).name("Ramzi").build();
 
         when(guideMapper.fromGuideDto(guideDto)).thenReturn(guide);
         when(guideRepository.save(guide)).thenReturn(savedguide);
@@ -62,21 +62,19 @@ class GuideServiceImplTest {
 
     @Test
     void shouldThrowDuplicateEntryExceptionWhenguideExists() {
-        GuideDto guideDto = GuideDto.builder()
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        GuideDto guideDto = GuideDto.builder().name("Ramzi").build();
 
-        Guide guide = Guide.builder()
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        Guide guide = Guide.builder().name("Ramzi").build();
 
         when(guideMapper.fromGuideDto(guideDto)).thenReturn(guide);
-        when(guideRepository.existsByNumTel(guideDto.getNumTel())).thenReturn(true);
+        when(guideRepository.existsByName(guideDto.getName())).thenReturn(true);
         Mockito.doNothing().when(guideValidators).validate(Mockito.any(Guide.class));
 
         assertThatThrownBy(() -> underTest.saveGuide(guideDto))
                 .isInstanceOf(DuplicateEntryException.class)
                 .hasMessage(" A Guid was found with this NumTélephone");
 
-        verify(guideRepository, times(1)).existsByNumTel(guideDto.getNumTel());
+        verify(guideRepository, times(1)).existsByName(guideDto.getName());
         verify(guideRepository, never()).save(any(Guide.class));
     }
     @Test
@@ -117,8 +115,8 @@ class GuideServiceImplTest {
     @Test
     void ShouldFindguideById() {
         Long givenguideId = 1L;
-        Guide guide = Guide.builder().id(1L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto expected = GuideDto.builder().id(1L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        Guide guide = Guide.builder().id(1L).name("Ramzi").build();
+        GuideDto expected = GuideDto.builder().id(1L).name("Ramzi").build();
         when(guideRepository.findById(givenguideId)).thenReturn(Optional.of(guide));
         when(guideMapper.fromGuide(guide)).thenReturn(expected);
         GuideDto result = underTest.findGuideById(givenguideId);
@@ -137,30 +135,22 @@ class GuideServiceImplTest {
 
     /*******                Test Method FindguideByNumTel                    ********* */
 
-
     @Test
-    void ShouldfindguideByLibelle() {
-        Integer givenNumTel = 54604022;
-        Guide guide = Guide.builder().firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto expected = GuideDto.builder().firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+    void ShouldFindGuideByLibelle() {
+        String libelle = "Ramzi";
+        Guide guide = Guide.builder().name("Ramzi").build();
+        GuideDto expected = GuideDto.builder().name("Ramzi").build();
 
-        when(guideRepository.findGuideByNumTel(givenNumTel)).thenReturn(Optional.of(guide));
+        when(guideRepository.findGuideByName(libelle)).thenReturn(Optional.of(guide));
         when(guideMapper.fromGuide(guide)).thenReturn(expected);
 
-        GuideDto result = underTest.findGuideByNumTel(givenNumTel);
+        GuideDto result = underTest.findGuideByName(libelle);
 
         assertThat(result).isNotNull();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
     }
 
-    @Test
-    void ShouldNotfindguideByVille() {
-        Integer  givenNumTel= 54604022;
 
-        when(guideRepository.findGuideByNumTel(givenNumTel)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> underTest.findGuideByNumTel(givenNumTel)).isInstanceOf(EntityNotFoundException.class);
-    }
 
 
     /***********    Test  Method updateguide ****/
@@ -170,10 +160,10 @@ class GuideServiceImplTest {
     @Test
     void ShouldUpdateguide() {
         Long givenguideId = 2L;
-        Guide guide = Guide.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto guideDto = GuideDto.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        Guide updatedguide = guide.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto expected = guideDto.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        Guide guide = Guide.builder().id(2L).name("Ramzi").build();
+        GuideDto guideDto = GuideDto.builder().id(2L).name("Ramzi").build();
+        Guide updatedguide = guide.builder().id(2L).name("Ramzi").build();
+        GuideDto expected = guideDto.builder().id(2L).name("Ramzi").build();
 
         when(guideRepository.findById(givenguideId)).thenReturn(Optional.of(guide));
         when(guideRepository.saveAndFlush(guide)).thenReturn(updatedguide);
@@ -190,10 +180,10 @@ class GuideServiceImplTest {
     @Test
     void ShouldNotUpdateguide() {
         Long givenguideId = 2L;
-        Guide guide = Guide.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto guideDto = GuideDto.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        Guide updatedguide = guide.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto expected = guideDto.builder().id(2L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        Guide guide = Guide.builder().id(2L).name("Ramzi").build();
+        GuideDto guideDto = GuideDto.builder().id(2L).name("Ramzi").build();
+        Guide updatedguide = guide.builder().id(2L).name("Ramzi").build();
+        GuideDto expected = guideDto.builder().id(2L).name("Ramzi").build();
 
         when(guideRepository.findById(givenguideId)).thenReturn(Optional.of(guide));
         when(guideRepository.saveAndFlush(guide)).thenReturn(updatedguide);
@@ -212,7 +202,7 @@ class GuideServiceImplTest {
         Long givenguideId = 2L;
         GuideDto guideDto = GuideDto.builder()
                 .id(2L)
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+                .name("Ramzi").build();
 
         when(guideRepository.findById(givenguideId)).thenReturn(Optional.empty());
 
@@ -224,10 +214,10 @@ class GuideServiceImplTest {
         Long givenguideId = 2L;
         Guide guide = Guide.builder()
                 .id(2L)
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+                .name("Ramzi").build();
         GuideDto guideDto = GuideDto.builder()
                 .id(2L)
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+                .name("Ramzi").build();
 
         when(guideRepository.findById(givenguideId)).thenReturn(Optional.of(guide));
         when(guideRepository.saveAndFlush(guide)).thenThrow(new RuntimeException("Database error"));
@@ -241,10 +231,10 @@ class GuideServiceImplTest {
         Long givenguideId = 2L;
         Guide guide = Guide.builder()
                 .id(2L)
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+                .name("Ramzi").build();
         GuideDto invalidguideDto = GuideDto.builder()
                 .id(2L)
-                .firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+                .name("Ramzi").build();
 
         when(guideRepository.findById(givenguideId)).thenReturn(Optional.of(guide));
 
@@ -267,8 +257,8 @@ class GuideServiceImplTest {
     @Test
     void shouldDeleteguideById() {
         Long guideId = 1L;
-        Guide guide = Guide.builder().id(1L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
-        GuideDto guideDto = GuideDto.builder().id(1L).firstName("Ramzi").lastName("Hadjsalem").numTel(54604022).build();
+        Guide guide = Guide.builder().id(1L).name("Ramzi").build();
+        GuideDto guideDto = GuideDto.builder().id(1L).name("Ramzi").build();
         when(guideRepository.findById(guideDto.getId())).thenReturn(Optional.of(guide));
         underTest.deleteGuide(guideId);
 

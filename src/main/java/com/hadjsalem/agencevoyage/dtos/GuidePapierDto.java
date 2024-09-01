@@ -2,14 +2,12 @@ package com.hadjsalem.agencevoyage.dtos;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
+public class GuidePapierDto extends GuideDto {
 
-public class GuidePapierDto {
- private    Long id;
- private    String libelle;
 }

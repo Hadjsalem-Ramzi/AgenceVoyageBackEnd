@@ -45,10 +45,10 @@ class TransportCommunTest {
 
     @Test
     void shouldSaveNewtransportCommun(){
-        TransportCommunDto transportCommunDto = TransportCommunDto.builder().nom("LocationKia").numTel(98546213).build();
-        TransportCommun transportCommun=  TransportCommun.builder().nom("LocationKia").numTel(98546213).build();
-        TransportCommun savedtransportCommun=  TransportCommun.builder().id(1L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto expectedtransportCommun= TransportCommunDto.builder().id(1L).nom("LocationKia").numTel(98546213).build();
+        TransportCommunDto transportCommunDto = TransportCommunDto.builder().name("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun=  TransportCommun.builder().name("LocationKia").numTel(98546213).build();
+        TransportCommun savedtransportCommun=  TransportCommun.builder().id(1L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto expectedtransportCommun= TransportCommunDto.builder().id(1L).name("LocationKia").numTel(98546213).build();
 
         when(transportCommunMapper.fromTransportCommunDto(transportCommunDto)).thenReturn(transportCommun);
         when(transportCommunRepository.save(transportCommun)).thenReturn(savedtransportCommun);
@@ -60,9 +60,9 @@ class TransportCommunTest {
 
     @Test
     void shouldThrowDuplicateEntryExceptionWhentransportCommunExists() {
-        TransportCommunDto transportCommunDto = TransportCommunDto.builder().nom("LocationKia").numTel(98546213).build();
+        TransportCommunDto transportCommunDto = TransportCommunDto.builder().name("LocationKia").numTel(98546213).build();
 
-        TransportCommun transportCommun = TransportCommun.builder().nom("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun = TransportCommun.builder().name("LocationKia").numTel(98546213).build();
 
         when(transportCommunMapper.fromTransportCommunDto(transportCommunDto)).thenReturn(transportCommun);
         when(transportCommunRepository.existsByNumTel(transportCommunDto.getNumTel())).thenReturn(true);
@@ -107,14 +107,15 @@ class TransportCommunTest {
         assertEquals(true, result.isFirst());
         assertEquals(true, result.isLast());
     }
-    /****         Test GetById Method                */
+//***         Test GetById Method
+
 
 
     @Test
     void ShouldFindtransportCommunById() {
         Long giventransportCommunId = 1L;
-        TransportCommun transportCommun = TransportCommun.builder().id(1L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto expected = TransportCommunDto.builder().id(1L).nom("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun = TransportCommun.builder().id(1L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto expected = TransportCommunDto.builder().id(1L).name("LocationKia").numTel(98546213).build();
         when(transportCommunRepository.findById(giventransportCommunId)).thenReturn(Optional.of(transportCommun));
         when(transportCommunMapper.fromTransportCommun(transportCommun)).thenReturn(expected);
         TransportCommunDto result = underTest.findTransportCommunById(giventransportCommunId);
@@ -131,19 +132,20 @@ class TransportCommunTest {
 
     }
 
-    /*******                Test Method FindtransportCommunByNumTel                    ********* */
+//******                Test Method FindtransportCommunByNumTel                    *********
+
 
 
     @Test
     void ShouldfindtransportCommunByLibelle() {
         String giventransportCommun = "LocationKia";
-        TransportCommun transportCommun = TransportCommun.builder().nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto expected = TransportCommunDto.builder().nom("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun = TransportCommun.builder().name("LocationKia").numTel(98546213).build();
+        TransportCommunDto expected = TransportCommunDto.builder().name("LocationKia").numTel(98546213).build();
 
-        when(transportCommunRepository.findTransportCommunByNom(giventransportCommun)).thenReturn(Optional.of(transportCommun));
+        when(transportCommunRepository.findTransportCommunByName(giventransportCommun)).thenReturn(Optional.of(transportCommun));
         when(transportCommunMapper.fromTransportCommun(transportCommun)).thenReturn(expected);
 
-        TransportCommunDto result = underTest.findTransportCommunByNom(transportCommun.getNom());
+        TransportCommunDto result = underTest.findTransportCommunByName(transportCommun.getName());
 
         assertThat(result).isNotNull();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
@@ -152,23 +154,24 @@ class TransportCommunTest {
     @Test
     void ShouldNotfindtransportCommunByVille() {
         String giventransportCommun = "LocationKia";
-        when(transportCommunRepository.findTransportCommunByNom(giventransportCommun)).thenReturn(Optional.empty());
+        when(transportCommunRepository.findTransportCommunByName(giventransportCommun)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.findTransportCommunByNom(giventransportCommun)).isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> underTest.findTransportCommunByName(giventransportCommun)).isInstanceOf(EntityNotFoundException.class);
     }
 
 
-    /***********    Test  Method updatetransportCommun ****/
+//**********    Test  Method updatetransportCommun ***
+
 
 
 
     @Test
     void ShouldUpdatetransportCommun() {
         Long giventransportCommunId = 2L;
-        TransportCommun transportCommun = TransportCommun.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto transportCommunDto = TransportCommunDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        TransportCommun updatedtransportCommun = transportCommun.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto expected = transportCommunDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun = TransportCommun.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto transportCommunDto = TransportCommunDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        TransportCommun updatedtransportCommun = transportCommun.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto expected = transportCommunDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
 
         when(transportCommunRepository.findById(giventransportCommunId)).thenReturn(Optional.of(transportCommun));
         when(transportCommunRepository.saveAndFlush(transportCommun)).thenReturn(updatedtransportCommun);
@@ -185,10 +188,10 @@ class TransportCommunTest {
     @Test
     void ShouldNotUpdatetransportCommun() {
         Long giventransportCommunId = 2L;
-        TransportCommun transportCommun = TransportCommun.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto transportCommunDto = TransportCommunDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        TransportCommun updatedtransportCommun = transportCommun.builder().id(2L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto expected = TransportCommunDto.builder().id(2L).nom("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun = TransportCommun.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto transportCommunDto = TransportCommunDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        TransportCommun updatedtransportCommun = transportCommun.builder().id(2L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto expected = TransportCommunDto.builder().id(2L).name("LocationKia").numTel(98546213).build();
 
         when(transportCommunRepository.findById(giventransportCommunId)).thenReturn(Optional.of(transportCommun));
         when(transportCommunRepository.saveAndFlush(transportCommun)).thenReturn(updatedtransportCommun);
@@ -207,7 +210,7 @@ class TransportCommunTest {
         Long giventransportCommunId = 2L;
         TransportCommunDto transportCommunDto = TransportCommunDto.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
 
         when(transportCommunRepository.findById(giventransportCommunId)).thenReturn(Optional.empty());
 
@@ -219,10 +222,10 @@ class TransportCommunTest {
         Long giventransportCommunId = 2L;
         TransportCommun transportCommun = TransportCommun.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
         TransportCommunDto transportCommunDto = TransportCommunDto.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
 
         when(transportCommunRepository.findById(giventransportCommunId)).thenReturn(Optional.of(transportCommun));
         when(transportCommunRepository.saveAndFlush(transportCommun)).thenThrow(new RuntimeException("Database error"));
@@ -236,10 +239,10 @@ class TransportCommunTest {
         Long giventransportCommunId = 2L;
         TransportCommun transportCommun = TransportCommun.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
         TransportCommunDto invalidtransportCommunDto = TransportCommunDto.builder()
                 .id(2L)
-                .nom("LocationKia").numTel(98546213).build();
+                .name("LocationKia").numTel(98546213).build();
 
         when(transportCommunRepository.findById(giventransportCommunId)).thenReturn(Optional.of(transportCommun));
 
@@ -255,15 +258,16 @@ class TransportCommunTest {
 
 
 
-    /**             Test Méthod Delete       ********/
+     //****     Test Méthod Delete       *******
+
 
 
 
     @Test
     void shouldDeletetransportCommunById() {
         Long transportCommunId = 1L;
-        TransportCommun transportCommun = TransportCommun.builder().id(1L).nom("LocationKia").numTel(98546213).build();
-        TransportCommunDto transportCommunDto = TransportCommunDto.builder().id(1L).nom("LocationKia").numTel(98546213).build();
+        TransportCommun transportCommun = TransportCommun.builder().id(1L).name("LocationKia").numTel(98546213).build();
+        TransportCommunDto transportCommunDto = TransportCommunDto.builder().id(1L).name("LocationKia").numTel(98546213).build();
         when(transportCommunRepository.findById(transportCommunDto.getId())).thenReturn(Optional.of(transportCommun));
         underTest.deleteTransportCommun(transportCommunId);
 

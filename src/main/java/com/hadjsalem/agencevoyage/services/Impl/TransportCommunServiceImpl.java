@@ -36,8 +36,8 @@ public class TransportCommunServiceImpl implements TransportCommunService {
 
     }
 
-    public TransportCommunDto findTransportCommunByNom(String firstName) {
-        Optional<TransportCommun> TransportCommun = transportCommunRepository.findTransportCommunByNom(firstName);
+    public TransportCommunDto findTransportCommunByName(String name) {
+        Optional<TransportCommun> TransportCommun = transportCommunRepository.findTransportCommunByName(name);
         if (!TransportCommun.isPresent()) {
             throw new RuntimeException("TransportCommun Not Found");
         }

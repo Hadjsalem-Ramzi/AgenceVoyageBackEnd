@@ -46,10 +46,10 @@ class MoyenTransportServiceImplTest {
 
     @Test
     void shouldSaveNewMoyenTransport(){
-        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransport moyenTransport= MoyenTransport.builder().nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransport savedMoyenTransport= MoyenTransport.builder().id(1L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto expectedMoyenTransport= MoyenTransportDto.builder().id(1L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport moyenTransport= MoyenTransport.builder().name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport savedMoyenTransport= MoyenTransport.builder().id(1L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto expectedMoyenTransport= MoyenTransportDto.builder().id(1L).name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportMapper.fromMoyenTransportDto(moyenTransportDto)).thenReturn(moyenTransport);
         when(moyenTransportRepository.save(moyenTransport)).thenReturn(savedMoyenTransport);
@@ -62,20 +62,20 @@ class MoyenTransportServiceImplTest {
     @Test
     void shouldThrowDuplicateEntryExceptionWhenMoyenTransportExists() {
         MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder()
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         MoyenTransport moyenTransport = MoyenTransport.builder()
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportMapper.fromMoyenTransportDto(moyenTransportDto)).thenReturn(moyenTransport);
-        when(moyenTransportRepository.existsByNom(moyenTransportDto.getNom())).thenReturn(true);
+        when(moyenTransportRepository.existsByName(moyenTransportDto.getName())).thenReturn(true);
         Mockito.doNothing().when(moyenTransportValidators).validate(Mockito.any(MoyenTransport.class));
 
         assertThatThrownBy(() -> underTest.saveMoyenTransport(moyenTransportDto))
                 .isInstanceOf(DuplicateEntryException.class)
                 .hasMessage("moyen Transport with this Nom was Found");
 
-        verify(moyenTransportRepository, times(1)).existsByNom(moyenTransportDto.getNom());
+        verify(moyenTransportRepository, times(1)).existsByName(moyenTransportDto.getName());
         verify(moyenTransportRepository, never()).save(any(MoyenTransport.class));
     }
     @Test
@@ -116,8 +116,8 @@ class MoyenTransportServiceImplTest {
     @Test
     void ShouldFindMoyenTransportById() {
         Long givenMoyenTransportId = 1L;
-        MoyenTransport moyenTransport = MoyenTransport.builder().id(1L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto expected = MoyenTransportDto.builder().id(1L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport moyenTransport = MoyenTransport.builder().id(1L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto expected = MoyenTransportDto.builder().id(1L).name("BusAZ").capacite(150L).Type("Terrestre").build();
         when(moyenTransportRepository.findById(givenMoyenTransportId)).thenReturn(Optional.of(moyenTransport));
         when(moyenTransportMapper.fromMoyenTransport(moyenTransport)).thenReturn(expected);
         MoyenTransportDto result = underTest.findMoyenTransportById(givenMoyenTransportId);
@@ -140,13 +140,13 @@ class MoyenTransportServiceImplTest {
     @Test
     void ShouldfindMoyenTransportByLibelle() {
         String givenLibelle = "Hannibaal";
-        MoyenTransport moyenTransport = MoyenTransport.builder().nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto expected = MoyenTransportDto.builder().nom("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport moyenTransport = MoyenTransport.builder().name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto expected = MoyenTransportDto.builder().name("BusAZ").capacite(150L).Type("Terrestre").build();
 
-        when(moyenTransportRepository.findMoyenTransportByNom(givenLibelle)).thenReturn(Optional.of(moyenTransport));
+        when(moyenTransportRepository.findMoyenTransportByName(givenLibelle)).thenReturn(Optional.of(moyenTransport));
         when(moyenTransportMapper.fromMoyenTransport(moyenTransport)).thenReturn(expected);
 
-        MoyenTransportDto result = underTest.findMoyenTransportByNom(givenLibelle);
+        MoyenTransportDto result = underTest.findMoyenTransportByName(givenLibelle);
 
         assertThat(result).isNotNull();
         assertThat(result).usingRecursiveComparison().isEqualTo(expected);
@@ -156,9 +156,9 @@ class MoyenTransportServiceImplTest {
     void ShouldNotfindMoyenTransportByLibelle() {
         String  givenLibelle= "hannibaal";
 
-        when(moyenTransportRepository.findMoyenTransportByNom(givenLibelle)).thenReturn(Optional.empty());
+        when(moyenTransportRepository.findMoyenTransportByName(givenLibelle)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.findMoyenTransportByNom(givenLibelle)).isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> underTest.findMoyenTransportByName(givenLibelle)).isInstanceOf(EntityNotFoundException.class);
     }
 
 
@@ -169,10 +169,10 @@ class MoyenTransportServiceImplTest {
     @Test
     void ShouldUpdateMoyenTransport() {
         Long givenMoyenTransportId = 2L;
-        MoyenTransport moyenTransport = MoyenTransport.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransport updatedMoyenTransport = MoyenTransport.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto expected = MoyenTransportDto.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport moyenTransport = MoyenTransport.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport updatedMoyenTransport = MoyenTransport.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto expected = MoyenTransportDto.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportRepository.findById(givenMoyenTransportId)).thenReturn(Optional.of(moyenTransport));
         when(moyenTransportRepository.saveAndFlush(moyenTransport)).thenReturn(updatedMoyenTransport);
@@ -189,10 +189,10 @@ class MoyenTransportServiceImplTest {
     @Test
     void ShouldNotUpdateMoyenTransport() {
         Long givenMoyenTransportId = 2L;
-        MoyenTransport moyenTransport = MoyenTransport.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransport updatedMoyenTransport = MoyenTransport.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto expected = MoyenTransportDto.builder().id(2L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport moyenTransport = MoyenTransport.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport updatedMoyenTransport = MoyenTransport.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto expected = MoyenTransportDto.builder().id(2L).name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportRepository.findById(givenMoyenTransportId)).thenReturn(Optional.of(moyenTransport));
         when(moyenTransportRepository.saveAndFlush(moyenTransport)).thenReturn(updatedMoyenTransport);
@@ -211,7 +211,7 @@ class MoyenTransportServiceImplTest {
         Long givenMoyenTransportId = 2L;
         MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder()
                 .id(2L)
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportRepository.findById(givenMoyenTransportId)).thenReturn(Optional.empty());
 
@@ -223,10 +223,10 @@ class MoyenTransportServiceImplTest {
         Long givenMoyenTransportId = 2L;
         MoyenTransport moyenTransport = MoyenTransport.builder()
                 .id(2L)
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
         MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder()
                 .id(2L)
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportRepository.findById(givenMoyenTransportId)).thenReturn(Optional.of(moyenTransport));
         when(moyenTransportRepository.saveAndFlush(moyenTransport)).thenThrow(new RuntimeException("Database error"));
@@ -240,10 +240,10 @@ class MoyenTransportServiceImplTest {
         Long givenMoyenTransportId = 2L;
         MoyenTransport moyenTransport = MoyenTransport.builder()
                 .id(2L)
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
         MoyenTransportDto invalidMoyenTransportDto = MoyenTransportDto.builder()
                 .id(2L)
-                .nom("BusAZ").capacite(150L).Type("Terrestre").build();
+                .name("BusAZ").capacite(150L).Type("Terrestre").build();
 
         when(moyenTransportRepository.findById(givenMoyenTransportId)).thenReturn(Optional.of(moyenTransport));
 
@@ -266,8 +266,8 @@ class MoyenTransportServiceImplTest {
     @Test
     void shouldDeleteMoyenTransportById() {
         Long MoyenTransportId = 1L;
-        MoyenTransport moyenTransport = MoyenTransport.builder().id(1L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
-        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().id(1L).nom("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransport moyenTransport = MoyenTransport.builder().id(1L).name("BusAZ").capacite(150L).Type("Terrestre").build();
+        MoyenTransportDto moyenTransportDto = MoyenTransportDto.builder().id(1L).name("BusAZ").capacite(150L).Type("Terrestre").build();
         when(moyenTransportRepository.findById(moyenTransportDto.getId())).thenReturn(Optional.of(moyenTransport));
         underTest.deleteMoyenTransport(MoyenTransportId);
 

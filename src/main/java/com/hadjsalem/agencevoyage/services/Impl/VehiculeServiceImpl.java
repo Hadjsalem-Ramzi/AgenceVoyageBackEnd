@@ -35,8 +35,8 @@ public class VehiculeServiceImpl implements VehiculeService {
 
     }
 
-    public VehiculeDto findVehiculeByImmatricule(String firstName) {
-        Optional<Vehicule> Vehicule = vehiculeRepository.findVehiculeByImmatricule(firstName);
+    public VehiculeDto findVehiculeByImmatricule(String immat) {
+        Optional<Vehicule> Vehicule = vehiculeRepository.findVehiculeByImmatricule(immat);
         if (!Vehicule.isPresent()) {
             throw new RuntimeException("Vehicule Not Found");
         }

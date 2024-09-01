@@ -37,8 +37,8 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
     }
 
     @Override
-    public GuidePersonneDto findGuidePersonneByNumTel(Integer NumTel) {
-        Optional<GuidePersonne> guidePersonne = guidePersonneRepository.findPersonneByNumTelephone(NumTel);
+    public GuidePersonneDto findGuidePersonneByName(String name) {
+        Optional<GuidePersonne> guidePersonne = guidePersonneRepository.findGuidePersonneByName(name);
         if (!guidePersonne.isPresent()) {
             throw new EntityNotFoundException("GuidePersonne Not Found");
         }
@@ -52,7 +52,7 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
              throw new IllegalArgumentException("Guide Personne est null");
          }
          guidePersonneValidators.validate(guidePersonne);
-         boolean exists= guidePersonneRepository.existsByNumTel(guidePersonneDto.getNumTel());
+         boolean exists= guidePersonneRepository.existsByName(guidePersonneDto.getName());
          if (exists){
              throw  new DuplicateEntryException("Un Guide Personne est existe avec cette Num télephone");
          }
@@ -67,7 +67,7 @@ public class GuidePersonneServiceImpl implements GuidePersonneService {
       GuidePersonne guidePersonne2 = guidePersonne1.get();
       guidePersonne2.setId(id);
       guidePersonneValidators.validate(guidePersonne2);
-      if(guidePersonneRepository.existsByNumTel(guidePersonne2.getNumTel())){
+      if(guidePersonneRepository.existsByName(guidePersonne2.getName())){
           throw new DuplicateEntryException("un Guide Personne est existe avec cette Num Télephone");
       }
       GuidePersonne guidePersonne3 =guidePersonneRepository.saveAndFlush(guidePersonne2);
